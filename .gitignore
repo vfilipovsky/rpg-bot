@@ -1,0 +1,9 @@
+﻿.idea
+RpgBot/.env
+RpgBot/bin
+RpgBot/obj
+RpgBot.sln.DotSettings.user
+TelegramRpgBot/.env
+TelegramRpgBot/bin
+TelegramRpgBot/obj
+TelegramRpgBot.sln.DotSettings.user

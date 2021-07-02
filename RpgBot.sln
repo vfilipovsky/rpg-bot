@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgmBot", "RpgBot\RpgBot.csproj", "{88B36FC5-20CA-4DC1-89E8-61D4989DB103}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramRpgBot", "TelegramRpgBot\TelegramRpgBot.csproj", "{DA4F59C2-64F4-4F78-A03F-35D9A57FE228}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88B36FC5-20CA-4DC1-89E8-61D4989DB103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88B36FC5-20CA-4DC1-89E8-61D4989DB103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88B36FC5-20CA-4DC1-89E8-61D4989DB103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88B36FC5-20CA-4DC1-89E8-61D4989DB103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA4F59C2-64F4-4F78-A03F-35D9A57FE228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA4F59C2-64F4-4F78-A03F-35D9A57FE228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA4F59C2-64F4-4F78-A03F-35D9A57FE228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA4F59C2-64F4-4F78-A03F-35D9A57FE228}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
