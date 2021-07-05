@@ -4,7 +4,8 @@ namespace RpgBot.Entity
 {
     public class Group
     {
-        public int GroupId { get; set; }
+        public string Id { get; set; }
         public List<User> Users { get; set; }
+        public User UserAdmin { get; set; }
     }
 }

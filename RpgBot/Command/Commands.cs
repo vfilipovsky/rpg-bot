@@ -7,16 +7,14 @@ namespace RpgBot.Command
     {
         public static IEnumerable<ICommand> List()
         {
-            var commands = new List<ICommand>
+            return new List<ICommand>
             {
                 new PraiseCommand(), 
                 new MeCommand(), 
                 new PunishCommand(), 
-                new TopCommand()
+                new TopCommand(),
+                new StartCommand(),
             };
-
-
-            return commands;
         }
     }
 }
