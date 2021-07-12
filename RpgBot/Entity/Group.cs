@@ -6,6 +6,5 @@ namespace RpgBot.Entity
     {
         public string Id { get; set; }
         public List<User> Users { get; set; }
-        public User UserAdmin { get; set; }
     }
 }

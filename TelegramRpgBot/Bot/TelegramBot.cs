@@ -38,7 +38,8 @@ namespace TelegramRpgBot.Bot
             HandleMessage(
                 args.Message.Text, 
                 args.Message.Chat, 
-                args.Message.From.Username, 
+                args.Message.From.Id.ToString(), 
+                args.Message.From.Username,
                 args.Message.Chat.Id.ToString());
         }
     }

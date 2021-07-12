@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.IO;
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
 using RpgBot.Entity;
 
 namespace RpgBot.Context
@@ -23,7 +26,7 @@ namespace RpgBot.Context
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("DataSource=./Data/Database/bot.db");
+            optionsBuilder.UseSqlite(@"DataSource=./Data/Database/bot.db");
         }
     }
 }

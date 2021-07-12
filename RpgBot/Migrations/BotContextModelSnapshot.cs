@@ -20,15 +20,10 @@ namespace RpgBot.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserAdminId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique();
-
-                    b.HasIndex("UserAdminId");
 
                     b.ToTable("Groups");
                 });
@@ -63,20 +58,13 @@ namespace RpgBot.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("RpgBot.Entity.Group", b =>
-                {
-                    b.HasOne("RpgBot.Entity.User", "UserAdmin")
-                        .WithMany()
-                        .HasForeignKey("UserAdminId");
-
-                    b.Navigation("UserAdmin");
-                });
-
             modelBuilder.Entity("RpgBot.Entity.User", b =>
                 {
-                    b.HasOne("RpgBot.Entity.Group", null)
+                    b.HasOne("RpgBot.Entity.Group", "Group")
                         .WithMany("Users")
                         .HasForeignKey("GroupId");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("RpgBot.Entity.Group", b =>
