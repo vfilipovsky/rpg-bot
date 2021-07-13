@@ -3,7 +3,7 @@ using System.Linq;
 using RpgBot.Command;
 using Telegram.Bot.Types;
 
-namespace TelegramRpgBot.Bot
+namespace RpgBot.Bot.Telegram
 {
     public static class TelegramCommands
     {

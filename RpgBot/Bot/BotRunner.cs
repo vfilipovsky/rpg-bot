@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
 using RpgBot.Command;
 using RpgBot.Exception;
-using RpgBot.Service;
+using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Bot
 {
     public abstract class BotRunner<T, TK>
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        protected BotRunner()
+        protected BotRunner(IUserService userService)
         {
-            _userService = new UserService();
+            _userService = userService;
         }
         
         public abstract void Listen();

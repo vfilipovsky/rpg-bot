@@ -2,22 +2,22 @@
 using RpgBot.Context;
 using RpgBot.Entity;
 using RpgBot.Level;
+using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Service
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private readonly BotContext _context;
-        private readonly GroupService _groupService;
+        private readonly BotContext _botContext;
+        private readonly IGroupService _groupService;
 
-        public UserService()
+        public UserService(BotContext botContext, IGroupService groupService)
         {
-            // TODO: DI
-            _context = new BotContext();
-            _groupService = new GroupService();
+            _botContext = botContext;
+            _groupService = groupService;
         }
 
-        private User Create(string username, string userId, string groupId)
+        public User Create(string username, string userId, string groupId)
         {
             var group = _groupService.Get(groupId);
 
@@ -28,23 +28,23 @@ namespace RpgBot.Service
                 Id = userId,
             };
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            _botContext.Users.Add(user);
+            _botContext.SaveChanges();
 
             return user;
         }
 
         public User Get(string username, string userId, string groupId)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == userId && u.Group.Id == groupId)
+            return _botContext.Users.FirstOrDefault(u => u.Id == userId && u.Group.Id == groupId)
                    ?? Create(username, userId, groupId);
         }
 
         public User AddExpForMessage(User user)
         {
             LevelSystem.AddExp(user, Rate.ExpPerMessage);
-            _context.Users.Update(user);
-            _context.SaveChangesAsync();
+            _botContext.Users.Update(user);
+            _botContext.SaveChanges();
 
             return user;
         }

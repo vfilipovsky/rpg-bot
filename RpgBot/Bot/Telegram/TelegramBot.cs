@@ -1,21 +1,21 @@
 using System;
 using System.Threading.Tasks;
-using RpgBot.Bot;
+using RpgBot.Service.Abstraction;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 
-namespace TelegramRpgBot.Bot
+namespace RpgBot.Bot.Telegram
 {
     public class TelegramBot : BotRunner<Message, ChatId>
     {
         private readonly ITelegramBotClient _bot;
 
-        public TelegramBot(string token)
+        public TelegramBot(string token, IUserService userService) : base(userService)
         {
-            _bot = new TelegramBotClient(token); 
+            _bot = new TelegramBotClient(token);
         }
-        
+
         public override void Listen()
         {
             _bot.SetMyCommandsAsync(TelegramCommands.List());
@@ -36,9 +36,9 @@ namespace TelegramRpgBot.Bot
         private void OnMessage(object sender, MessageEventArgs args)
         {
             HandleMessage(
-                args.Message.Text, 
-                args.Message.Chat, 
-                args.Message.From.Id.ToString(), 
+                args.Message.Text,
+                args.Message.Chat,
+                args.Message.From.Id.ToString(),
                 args.Message.From.Username,
                 args.Message.Chat.Id.ToString());
         }

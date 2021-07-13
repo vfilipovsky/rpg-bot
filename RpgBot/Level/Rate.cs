@@ -1,4 +1,4 @@
-﻿namespace RpgBot
+﻿namespace RpgBot.Level
 {
     public enum Rate
     {

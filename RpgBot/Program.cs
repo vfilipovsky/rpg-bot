@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using RpgBot.EntryPoint;
 
 namespace RpgBot
 {
@@ -6,7 +7,9 @@ namespace RpgBot
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Run from telegram bot project");
+            var services = Startup.ConfigureServices();
+            var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService<IEntryPoint>()?.Run(args);
         }
     }
 }
