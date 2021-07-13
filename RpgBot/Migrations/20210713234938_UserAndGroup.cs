@@ -26,7 +26,14 @@ namespace RpgBot.Migrations
                     Reputation = table.Column<int>(type: "INTEGER", nullable: false),
                     Experience = table.Column<int>(type: "INTEGER", nullable: false),
                     Level = table.Column<int>(type: "INTEGER", nullable: false),
-                    GroupId = table.Column<string>(type: "TEXT", nullable: false)
+                    HealthPoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    MaxHealthPoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    ManaPoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    MaxManaPoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    StaminaPoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    MaxStaminaPoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    MessagesCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    GroupId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -49,12 +56,6 @@ namespace RpgBot.Migrations
                 name: "IX_Users_GroupId",
                 table: "Users",
                 column: "GroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Id",
-                table: "Users",
-                column: "Id",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

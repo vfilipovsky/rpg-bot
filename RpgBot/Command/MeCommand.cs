@@ -14,9 +14,13 @@ namespace RpgBot.Command
         {
             return
                 $"Username: @{user.Username}\n" +
+                $"Messages Count: {user.MessagesCount}\n" +
                 $"Reputation: {user.Reputation}\n" +
-                $"Level: {user.Level}\n" +
-                $"Experience: {user.Experience}/{LevelSystem.GetExpToNextLevel(user.Level)}\n";
+                $"LVL: {user.Level}\n" +
+                $"Exp: {user.Experience}/{LevelSystem.GetExpToNextLevel(user.Level)}\n" +
+                $"HP: {user.HealthPoints}/{user.MaxHealthPoints}\n" +
+                $"MP: {user.ManaPoints}/{user.MaxManaPoints}\n" +
+                $"SP: {user.StaminaPoints}/{user.MaxStaminaPoints}\n";
         }
 
         public string GetName()

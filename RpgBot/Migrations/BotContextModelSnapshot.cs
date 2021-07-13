@@ -39,10 +39,31 @@ namespace RpgBot.Migrations
                     b.Property<string>("GroupId")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("HealthPoints")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Level")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ManaPoints")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MaxHealthPoints")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MaxManaPoints")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MaxStaminaPoints")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MessagesCount")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Reputation")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StaminaPoints")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Username")
@@ -51,9 +72,6 @@ namespace RpgBot.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });

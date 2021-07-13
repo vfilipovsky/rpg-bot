@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using RpgBot.Command.Abstraction;
-using RpgBot.Context;
 using RpgBot.Entity;
+using RpgBot.Level;
 using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
@@ -25,6 +25,9 @@ namespace RpgBot.Command
                 .ElementAt(1)
                 .Replace('@'.ToString(), string.Empty);
 
+            if (user.StaminaPoints < Rate.PunishStaminaCost)
+                return $"Not enough stamina, need {Rate.PunishStaminaCost} ({user.StaminaPoints}). @{user.Username}";
+            
             var userToPunish = _userService.Punish(username, user);
 
             return null == userToPunish 

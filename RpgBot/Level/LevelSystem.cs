@@ -8,12 +8,14 @@ namespace RpgBot.Level
         public static User AddExp(User user, int exp)
         {
             user.Experience += exp;
-            // todo: use rates from enum
             var experienceToNextLevel = GetExpToNextLevel(user.Level);
 
             if (user.Experience <= experienceToNextLevel) return user;
             
             user.Level += 1;
+            user.MaxHealthPoints += Rate.HealthPerLevel;
+            user.MaxStaminaPoints += Rate.StaminaPerLevel;
+            user.MaxManaPoints += Rate.ManaPerLevel;
             user.Experience -= experienceToNextLevel;
 
             return user;

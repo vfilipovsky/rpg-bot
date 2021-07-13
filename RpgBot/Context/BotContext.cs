@@ -14,11 +14,10 @@ namespace RpgBot.Context
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasIndex(e => e.Id).IsUnique();
-            });
-            
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Group)
+                .WithMany(g => g.Users);
+
             modelBuilder.Entity<Group>(entity =>
             {
                 entity.HasIndex(e => e.Id).IsUnique();

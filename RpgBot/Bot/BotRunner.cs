@@ -23,14 +23,14 @@ namespace RpgBot.Bot
 
         protected abstract Task<T> SendMessageAsync(TK chat, string message);
 
-        protected void HandleMessage(string message, TK chat, string userId, string username, string group)
+        protected void HandleMessage(string message, TK chat, string userId, string username, string groupId)
         {
             if (string.IsNullOrEmpty(message))
             {
                 return;
             }
 
-            var user = _userService.Get(username, userId, group);
+            var user = _userService.Get(username, userId, groupId);
             
             try
             {

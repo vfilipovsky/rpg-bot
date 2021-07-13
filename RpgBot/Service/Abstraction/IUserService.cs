@@ -10,6 +10,6 @@ namespace RpgBot.Service.Abstraction
         public User AddExpForMessage(User user);
         public User Praise(string username, User user);
         public User Punish(string username, User user);
-        public List<User> GetTopPlayers();
+        public IEnumerable<User> GetTopPlayers();
     }
 }

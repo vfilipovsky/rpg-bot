@@ -50,9 +50,31 @@ namespace RpgBot.Service
             return user;
         }
 
+        private User Regenerate(User user)
+        {
+            var hpAfterRegen = user.HealthPoints += Rate.HealthRegen;
+
+            if (hpAfterRegen <= user.MaxHealthPoints) user.HealthPoints = hpAfterRegen;
+
+            var manaAfterRegen = user.ManaPoints += Rate.ManaRegen;
+
+            if (manaAfterRegen <= user.MaxManaPoints) user.ManaPoints = manaAfterRegen;
+
+            var staminaAfterRegen = user.StaminaPoints += Rate.StaminaRegen;
+
+            if (staminaAfterRegen <= user.MaxStaminaPoints) user.StaminaPoints = staminaAfterRegen;
+            
+            return user;
+        }
+        
         public User AddExpForMessage(User user)
         {
             LevelSystem.AddExp(user, Rate.ExpPerMessage);
+            user.MessagesCount += 1;
+
+            if (user.MessagesCount % Rate.RegeneratePerMessages == 0)
+                user = Regenerate(user);
+
             _context.Users.Update(user);
             _context.SaveChanges();
 
@@ -61,11 +83,15 @@ namespace RpgBot.Service
 
         public User Praise(string username, User user)
         {
-            var userToPraise = _context.Users.FirstOrDefault(u => u.Username == username && u.Group == user.Group);
+            var userToPraise = _context.Users
+                .FirstOrDefault(u => u.Username == username && u.Group.Id == user.Group.Id);
             
             if (null == userToPraise) return null;
 
-            userToPraise.Experience += Rate.ReputationPerPraise;
+            user.ManaPoints -= Rate.PraiseManaCost;
+            userToPraise.Reputation += Rate.ReputationPerPraise;
+            
+            _context.Users.Update(user);
             _context.Users.Update(userToPraise);
             _context.SaveChanges();
 
@@ -74,22 +100,28 @@ namespace RpgBot.Service
         
         public User Punish(string username, User user)
         {
-            var userToPunish = _context.Users.FirstOrDefault(u => u.Username == username && u.Group == user.Group);
+            var userToPunish = _context.Users
+                .FirstOrDefault(u => u.Username == username && u.Group.Id == user.Group.Id);
             
             if (null == userToPunish) return null;
 
-            userToPunish.Experience += Rate.ReputationPerPunish;
+            user.StaminaPoints -= Rate.PunishStaminaCost;
+            userToPunish.Reputation += Rate.ReputationPerPunish;
+
+            _context.Users.Update(user);
             _context.Users.Update(userToPunish);
             _context.SaveChanges();
 
             return userToPunish;
         }
 
-        public List<User> GetTopPlayers()
+        public IEnumerable<User> GetTopPlayers()
         {
-            return _context.Users
-                .GroupBy(u => u.Level)
-                .Select(u => u.OrderByDescending(y => y.Level).First()).ToList();
+            // todo: finish method
+            return new List<User>();
+            // return _context.Users
+            //     .GroupBy(u => u.Level)
+            //     .Select(u => u.OrderByDescending(y => y.Level)).ToList();
         }
     }
 }
