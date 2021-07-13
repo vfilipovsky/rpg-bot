@@ -1,4 +1,6 @@
 ﻿using RpgBot.Command.Abstraction;
+using RpgBot.Entity;
+using RpgBot.Level;
 
 namespace RpgBot.Command
 {
@@ -8,9 +10,13 @@ namespace RpgBot.Command
         private const string Name = "/me";
         private const string Description = "Show details about you";
         
-        public string Run(string text)
+        public string Run(string text, User user)
         {
-            throw new System.NotImplementedException();
+            return
+                $"Username: @{user.Username}\n" +
+                $"Reputation: {user.Reputation}\n" +
+                $"Level: {user.Level}\n" +
+                $"Experience: {user.Experience}/{LevelSystem.GetExpToNextLevel(user.Level)}\n";
         }
 
         public string GetName()

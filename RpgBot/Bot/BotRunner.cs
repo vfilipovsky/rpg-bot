@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using RpgBot.Command;
 using RpgBot.Exception;
 using RpgBot.Service.Abstraction;
@@ -8,10 +9,14 @@ namespace RpgBot.Bot
     public abstract class BotRunner<T, TK>
     {
         private readonly IUserService _userService;
+        private readonly ILogger _logger;
+        private readonly Commands _commands;
 
-        protected BotRunner(IUserService userService)
+        protected BotRunner(IUserService userService, ILogger logger, Commands commands)
         {
             _userService = userService;
+            _logger = logger;
+            _commands = commands;
         }
         
         public abstract void Listen();
@@ -35,14 +40,14 @@ namespace RpgBot.Bot
                     return;
                 }
 
-                foreach (var command in Commands.List())
+                foreach (var command in _commands.List())
                 {
                     if (!message.StartsWith(command.GetName())) continue;
-                    SendMessageAsync(chat, command.Run(message));
+                    SendMessageAsync(chat, command.Run(message, user));
                     return;
                 }
 
-                SendMessageAsync(chat, $"Command '{message}' not found.");
+                SendMessageAsync(chat, $"Command '{message}' not found. @" + username);
             }
             catch (BotException e)
             {
@@ -50,9 +55,8 @@ namespace RpgBot.Bot
             }
             catch (System.Exception e)
             {
-                // todo: log
-                // SendMessageAsync(chat, "Unexpected error");
-                SendMessageAsync(chat, e.Message);
+                _logger.LogError(e.Message);
+                SendMessageAsync(chat, "Unexpected error");
             }
         }
     }

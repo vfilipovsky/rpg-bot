@@ -1,4 +1,8 @@
-﻿using RpgBot.Command.Abstraction;
+﻿using System.Linq;
+using RpgBot.Command.Abstraction;
+using RpgBot.Context;
+using RpgBot.Entity;
+using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
 {
@@ -8,9 +12,24 @@ namespace RpgBot.Command
         private const string Name = "/punish";
         private const string Description = "Punish @user and substracts 1 reputation from him";
         
-        public string Run(string text)
+        private readonly IUserService _userService;
+        
+        public PunishCommand(IUserService userService)
         {
-            throw new System.NotImplementedException();
+            _userService = userService;
+        }
+        
+        public string Run(string text, User user)
+        {
+            var username = GetArgs(text, ArgsCount)
+                .ElementAt(1)
+                .Replace('@'.ToString(), string.Empty);
+
+            var userToPunish = _userService.Punish(username, user);
+
+            return null == userToPunish 
+                ? $"User '{username}' not found" 
+                : $"@{userToPunish.Username} got punished by @{user.Username}";
         }
 
         public string GetName()

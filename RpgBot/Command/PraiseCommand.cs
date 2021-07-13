@@ -1,4 +1,8 @@
-﻿using RpgBot.Command.Abstraction;
+﻿using System.Linq;
+using RpgBot.Command.Abstraction;
+using RpgBot.Context;
+using RpgBot.Entity;
+using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
 {
@@ -7,13 +11,27 @@ namespace RpgBot.Command
         private const int ArgsCount = 1;
         private const string Name = "/praise";
         private const string Description = "Praise user and give him +1 to reputation.";
-
-        public string Run(string text)
+        
+        private readonly IUserService _userService;
+        
+        public PraiseCommand( IUserService userService)
         {
-            var message = "123";
-            var args = GetArgs(text, ArgsCount);
-            
-            return message;
+            _userService = userService;
+        }
+        
+        public string Run(string text, User user)
+        {
+            var username = GetArgs(text, ArgsCount)
+                .ElementAt(1)
+                .Replace('@'.ToString(), string.Empty);
+
+            if (username == user.Username) return $"You cannot praise yourself. @{user.Username}";
+
+            var userToPraise = _userService.Praise(username, user);
+
+            return null == userToPraise 
+                ? $"User '{username}' not found" 
+                : $"@{userToPraise.Username} got praised by @{user.Username}";
         }
 
         public string GetName()

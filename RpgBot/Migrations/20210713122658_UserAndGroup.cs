@@ -26,7 +26,7 @@ namespace RpgBot.Migrations
                     Reputation = table.Column<int>(type: "INTEGER", nullable: false),
                     Experience = table.Column<int>(type: "INTEGER", nullable: false),
                     Level = table.Column<int>(type: "INTEGER", nullable: false),
-                    GroupId = table.Column<string>(type: "TEXT", nullable: true)
+                    GroupId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,4 +1,6 @@
 ﻿using RpgBot.Command.Abstraction;
+using RpgBot.Entity;
+using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
 {
@@ -6,11 +8,29 @@ namespace RpgBot.Command
     {
         private const int ArgsCount = 0;
         private const string Name = "/top";
-        private const string Description = "List of players";
-        
-        public string Run(string text)
+        private const string Description = "List of top players";
+
+        private readonly IUserService _userService;
+
+        public TopCommand(IUserService userService)
         {
-            throw new System.NotImplementedException();
+            _userService = userService;
+        }
+        
+        public string Run(string text, User user)
+        {
+            var users = _userService.GetTopPlayers();
+
+            var result = "";
+            var counter = 1;
+            
+            foreach (var u in users)
+            {
+                result += $"No{counter}: {u.Username} / Lv: {u.Level}, Rep: {u.Reputation}\n";
+                counter++;
+            }
+
+            return result;
         }
 
         public string GetName()

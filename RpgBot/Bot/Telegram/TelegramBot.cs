@@ -1,5 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using RpgBot.Command;
 using RpgBot.Service.Abstraction;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -9,20 +12,31 @@ namespace RpgBot.Bot.Telegram
 {
     public class TelegramBot : BotRunner<Message, ChatId>
     {
-        private readonly ITelegramBotClient _bot;
+        private ITelegramBotClient _bot;
+        private readonly ILogger<TelegramBot> _logger;
+        private readonly TelegramCommands _telegramCommands;
+        private readonly IConfiguration _configuration;
 
-        public TelegramBot(string token, IUserService userService) : base(userService)
+        public TelegramBot(
+            IUserService userService,
+            ILogger<TelegramBot> logger,
+            IConfiguration configuration,
+            Commands commands,
+            TelegramCommands telegramCommands) : base(userService, logger, commands)
         {
-            _bot = new TelegramBotClient(token);
+            _logger = logger;
+            _telegramCommands = telegramCommands;
+            _configuration = configuration;
         }
 
         public override void Listen()
         {
-            _bot.SetMyCommandsAsync(TelegramCommands.List());
+            _bot = new TelegramBotClient(_configuration["Bot:Token"]);
+            _bot.SetMyCommandsAsync(_telegramCommands.List());
             _bot.OnMessage += OnMessage;
             _bot.StartReceiving();
 
-            Console.WriteLine("Bot is running...");
+            _logger.LogInformation("Bot started listening...");
             Console.In.ReadLineAsync();
 
             _bot.StopReceiving();

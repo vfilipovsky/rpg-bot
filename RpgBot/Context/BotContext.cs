@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using DotNetEnv;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RpgBot.Entity;
 
 namespace RpgBot.Context
@@ -11,6 +8,10 @@ namespace RpgBot.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
 
+        public BotContext(DbContextOptions<BotContext> options) : base(options)
+        {
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(entity =>
@@ -22,11 +23,6 @@ namespace RpgBot.Context
             {
                 entity.HasIndex(e => e.Id).IsUnique();
             });
-        }
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite(@"DataSource=./Data/Database/bot.db");
         }
     }
 }

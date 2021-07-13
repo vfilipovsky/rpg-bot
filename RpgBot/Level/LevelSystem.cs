@@ -5,11 +5,11 @@ namespace RpgBot.Level
 {
     public static class LevelSystem
     {
-        public static User AddExp(User user, Rate rate)
+        public static User AddExp(User user, int exp)
         {
-            user.Experience += (int)rate;
+            user.Experience += exp;
             // todo: use rates from enum
-            var experienceToNextLevel = (int)(50f * (MathF.Pow(user.Level + 1, 2) - (5 * (user.Level + 1)) + 8));
+            var experienceToNextLevel = GetExpToNextLevel(user.Level);
 
             if (user.Experience <= experienceToNextLevel) return user;
             
@@ -17,6 +17,11 @@ namespace RpgBot.Level
             user.Experience -= experienceToNextLevel;
 
             return user;
+        }
+
+        public static int GetExpToNextLevel(int currentLevel)
+        {
+            return (int)(Math.Pow(Rate.XpBase * currentLevel, Rate.Scale));
         }
     }
 }

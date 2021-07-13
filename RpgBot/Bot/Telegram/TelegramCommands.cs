@@ -5,11 +5,18 @@ using Telegram.Bot.Types;
 
 namespace RpgBot.Bot.Telegram
 {
-    public static class TelegramCommands
+    public class TelegramCommands
     {
-        public static IEnumerable<BotCommand> List()
+        private readonly Commands _commands;
+
+        public TelegramCommands(Commands commands)
         {
-            return Commands
+            _commands = commands;
+        }
+        
+        public IEnumerable<BotCommand> List()
+        {
+            return _commands
                 .List()
                 .Select(
                     command => new BotCommand {Command = command.GetName(), Description = command.GetDescription()})

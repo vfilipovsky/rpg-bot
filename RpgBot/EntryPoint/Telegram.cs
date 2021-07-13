@@ -1,30 +1,19 @@
-﻿using System;
-using RpgBot.Bot.Telegram;
-using RpgBot.Service.Abstraction;
+﻿using RpgBot.Bot.Telegram;
 
 namespace RpgBot.EntryPoint
 {
     public class Telegram : IEntryPoint
     {
-        private readonly IUserService _userService;
-        
-        public Telegram(IUserService userService)
+        private readonly TelegramBot _telegramBot;
+
+        public Telegram(TelegramBot telegramBot)
         {
-            _userService = userService;
+            _telegramBot = telegramBot;
         }
-        
+
         public void Run(string[] args)
         {
-            DotNetEnv.Env.TraversePath().Load();
-
-            var token = Environment.GetEnvironmentVariable("BOT_TOKEN");
-
-            if (null == token)
-            {
-                throw new ArgumentException("'token' not provided in .env");
-            }
-
-            new TelegramBot(token, _userService).Listen();
+            _telegramBot.Listen();
         }
     }
 }

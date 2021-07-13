@@ -1,20 +1,21 @@
 ﻿namespace RpgBot.Level
 {
-    public enum Rate
+    public static class Rate
     {
-        Multiplier = 1,
+        public const float Scale = 1.1f;
+        public const float XpBase = 100.0f;
 
         // Message
-        ExpPerMessage = 1,
-        ExpPerImage = 1,
+        public const int ExpPerMessage = 1;
+        public const int ExpPerImage = 1;
         
         // Praise
-        ReputationPerPraise = 1,
-        PraiseDailyMaxCount = 3,
+        public const int ReputationPerPraise = 1;
+        public const int PraiseDailyMaxCount = 3;
         
         // Punish
-        ReputationPerPunish = -1,
-        PunishDailyMaxCount = 3,
+        public const int ReputationPerPunish = -1;
+        public const int PunishDailyMaxCount = 3;
 
     }
 }

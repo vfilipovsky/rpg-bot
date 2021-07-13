@@ -3,17 +3,29 @@ using RpgBot.Command.Abstraction;
 
 namespace RpgBot.Command
 {
-    public static class Commands
+    public class Commands
     {
-        public static IEnumerable<ICommand> List()
+        private readonly PraiseCommand _praiseCommand;
+        private readonly PunishCommand _punishCommand;
+        private readonly TopCommand _topCommand;
+        private readonly MeCommand _meCommand;
+
+        public Commands(PraiseCommand praise, PunishCommand punish, TopCommand top, MeCommand me)
+        {
+            _praiseCommand = praise;
+            _punishCommand = punish;
+            _topCommand = top;
+            _meCommand = me;
+        }
+
+        public IEnumerable<ICommand> List()
         {
             return new List<ICommand>
             {
-                new PraiseCommand(), 
-                new MeCommand(), 
-                new PunishCommand(), 
-                new TopCommand(),
-                new StartCommand(),
+                _praiseCommand, 
+                _meCommand, 
+                _punishCommand, 
+                _topCommand,
             };
         }
     }
