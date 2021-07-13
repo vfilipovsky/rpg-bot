@@ -8,7 +8,7 @@ using RpgBot.Context;
 namespace RpgBot.Migrations
 {
     [DbContext(typeof(BotContext))]
-    [Migration("20210713122658_UserAndGroup")]
+    [Migration("20210713205957_UserAndGroup")]
     partial class UserAndGroup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
