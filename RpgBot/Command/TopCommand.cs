@@ -1,5 +1,6 @@
 ﻿using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
+using RpgBot.Level;
 using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
@@ -26,7 +27,12 @@ namespace RpgBot.Command
             
             foreach (var u in users)
             {
-                result += $"No{counter}: {u.Username} / Lv: {u.Level}, Rep: {u.Reputation}\n";
+                result += 
+                    $"No{counter}: {u.Username} / " +
+                    $"Lv: {u.Level}, " +
+                    $"Exp: {u.Experience}/{LevelSystem.GetExpToNextLevel(u.Level)}, " +
+                    $"Rep: {u.Reputation}\n";
+
                 counter++;
             }
 

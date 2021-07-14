@@ -120,7 +120,9 @@ namespace RpgBot.Service
         {
             return _context.Users
                 .Where(u => u.GroupId == groupId)
-                .OrderByDescending(u => u.Level);
+                .OrderByDescending(u => u.Level)
+                .ThenByDescending(u => u.Reputation)
+                .ThenByDescending(u => u.Experience);
         }
 
         public string Stringify(User user)
