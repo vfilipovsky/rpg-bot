@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using RpgBot.Command;
+using RpgBot.Command.Abstraction;
 using RpgBot.Service.Abstraction;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -21,7 +21,7 @@ namespace RpgBot.Bot.Telegram
             IUserService userService,
             ILogger<TelegramBot> logger,
             IConfiguration configuration,
-            Commands commands,
+            ICommands commands,
             TelegramCommands telegramCommands) : base(userService, logger, commands)
         {
             _logger = logger;

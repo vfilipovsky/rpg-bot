@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using RpgBot.Context;
 using RpgBot.Entity;
 using RpgBot.Level;
@@ -36,9 +37,18 @@ namespace RpgBot.Service
             return user;
         }
 
+        public User GetByUsernameAndGroupId(string username, string groupId)
+        {
+            return _context.Users
+                .Include(u => u.Group)
+                .FirstOrDefault(u => u.Username == username && u.Group.Id == groupId);
+        }
+        
         public User Get(string username, string userId, string groupId)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId && u.Group.Id == groupId)
+            var user = _context.Users
+                           .Include(u => u.Group)
+                           .FirstOrDefault(u => u.Id == userId && u.Group.Id == groupId)
                        ?? Create(username, userId, groupId);
 
             if (user.Username == username) return user;
@@ -63,10 +73,10 @@ namespace RpgBot.Service
             var staminaAfterRegen = user.StaminaPoints += Rate.StaminaRegen;
 
             if (staminaAfterRegen <= user.MaxStaminaPoints) user.StaminaPoints = staminaAfterRegen;
-            
+
             return user;
         }
-        
+
         public User AddExpForMessage(User user)
         {
             LevelSystem.AddExp(user, Rate.ExpPerMessage);
@@ -85,24 +95,24 @@ namespace RpgBot.Service
         {
             var userToPraise = _context.Users
                 .FirstOrDefault(u => u.Username == username && u.Group.Id == user.Group.Id);
-            
+
             if (null == userToPraise) return null;
 
             user.ManaPoints -= Rate.PraiseManaCost;
             userToPraise.Reputation += Rate.ReputationPerPraise;
-            
+
             _context.Users.Update(user);
             _context.Users.Update(userToPraise);
             _context.SaveChanges();
 
             return userToPraise;
         }
-        
+
         public User Punish(string username, User user)
         {
             var userToPunish = _context.Users
                 .FirstOrDefault(u => u.Username == username && u.Group.Id == user.Group.Id);
-            
+
             if (null == userToPunish) return null;
 
             user.StaminaPoints -= Rate.PunishStaminaCost;
@@ -117,11 +127,20 @@ namespace RpgBot.Service
 
         public IEnumerable<User> GetTopPlayers()
         {
-            // todo: finish method
-            return new List<User>();
-            // return _context.Users
-            //     .GroupBy(u => u.Level)
-            //     .Select(u => u.OrderByDescending(y => y.Level)).ToList();
+            return _context.Users.OrderByDescending(u => u.Level);
+        }
+
+        public string Stringify(User user)
+        {
+            return 
+                $"Username: {user.Username}\n" +
+                $"Messages Count: {user.MessagesCount}\n" +
+                $"Reputation: {user.Reputation}\n" +
+                $"LVL: {user.Level}\n" +
+                $"Exp: {user.Experience}/{LevelSystem.GetExpToNextLevel(user.Level)}\n" +
+                $"HP: {user.HealthPoints}/{user.MaxHealthPoints}\n" +
+                $"MP: {user.ManaPoints}/{user.MaxManaPoints}\n" +
+                $"SP: {user.StaminaPoints}/{user.MaxStaminaPoints}";
         }
     }
 }

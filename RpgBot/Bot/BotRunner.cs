@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using RpgBot.Command;
+using RpgBot.Command.Abstraction;
 using RpgBot.Exception;
 using RpgBot.Service.Abstraction;
 
@@ -10,9 +10,9 @@ namespace RpgBot.Bot
     {
         private readonly IUserService _userService;
         private readonly ILogger _logger;
-        private readonly Commands _commands;
+        private readonly ICommands _commands;
 
-        protected BotRunner(IUserService userService, ILogger logger, Commands commands)
+        protected BotRunner(IUserService userService, ILogger logger, ICommands commands)
         {
             _userService = userService;
             _logger = logger;

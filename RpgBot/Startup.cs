@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RpgBot.Bot.Telegram;
 using RpgBot.Command;
+using RpgBot.Command.Abstraction;
 using RpgBot.Context;
 using RpgBot.EntryPoint;
 using RpgBot.Service;
@@ -31,10 +32,11 @@ namespace RpgBot
 
             // commands
             serviceCollection.AddSingleton<TopCommand>();
+            serviceCollection.AddSingleton<AboutCommand>();
             serviceCollection.AddSingleton<PraiseCommand>();
             serviceCollection.AddSingleton<PunishCommand>();
             serviceCollection.AddSingleton<MeCommand>();
-            serviceCollection.AddSingleton<Commands>();
+            serviceCollection.AddSingleton<ICommands, Commands>();
             serviceCollection.AddSingleton<TelegramCommands>();
 
             serviceCollection.AddDbContext<BotContext>(options => {

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RpgBot.Command;
+using RpgBot.Command.Abstraction;
 using Telegram.Bot.Types;
 
 namespace RpgBot.Bot.Telegram
 {
     public class TelegramCommands
     {
-        private readonly Commands _commands;
+        private readonly ICommands _commands;
 
-        public TelegramCommands(Commands commands)
+        public TelegramCommands(ICommands commands)
         {
             _commands = commands;
         }

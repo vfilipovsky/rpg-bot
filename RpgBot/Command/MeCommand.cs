@@ -1,6 +1,8 @@
 ﻿using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
 using RpgBot.Level;
+using RpgBot.Service.Abstraction;
+using SQLitePCL;
 
 namespace RpgBot.Command
 {
@@ -9,18 +11,17 @@ namespace RpgBot.Command
         private const int ArgsCount = 0;
         private const string Name = "/me";
         private const string Description = "Show details about you";
+
+        private readonly IUserService _userService;
+
+        public MeCommand(IUserService userService)
+        {
+            _userService = userService;
+        }
         
         public string Run(string text, User user)
         {
-            return
-                $"Username: @{user.Username}\n" +
-                $"Messages Count: {user.MessagesCount}\n" +
-                $"Reputation: {user.Reputation}\n" +
-                $"LVL: {user.Level}\n" +
-                $"Exp: {user.Experience}/{LevelSystem.GetExpToNextLevel(user.Level)}\n" +
-                $"HP: {user.HealthPoints}/{user.MaxHealthPoints}\n" +
-                $"MP: {user.ManaPoints}/{user.MaxManaPoints}\n" +
-                $"SP: {user.StaminaPoints}/{user.MaxStaminaPoints}\n";
+            return _userService.Stringify(user);
         }
 
         public string GetName()
