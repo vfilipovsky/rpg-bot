@@ -18,6 +18,7 @@ namespace RpgBot.Bot.Telegram
         private readonly ILogger<TelegramBot> _logger;
         private readonly TelegramCommands _telegramCommands;
         private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
 
         public TelegramBot(
             IUserService userService,
@@ -29,6 +30,7 @@ namespace RpgBot.Bot.Telegram
             _logger = logger;
             _telegramCommands = telegramCommands;
             _configuration = configuration;
+            _userService = userService;
         }
 
         public override void Listen()
@@ -51,23 +53,47 @@ namespace RpgBot.Bot.Telegram
 
         private void OnMessage(object sender, MessageEventArgs args)
         {
-            var username = args.Message.From.Username ?? GetUsername(args.Message.Entities);
-            
+            var text = GetMentionedUserIdToMessage(args.Message);
+
             HandleMessage(
-                args.Message.Text,
+                text,
                 args.Message.Chat,
                 args.Message.From.Id.ToString(),
-                username,
+                args.Message.From.Username ?? args.Message.From.Id.ToString(),
                 args.Message.Chat.Id.ToString());
         }
 
-        private static string GetUsername(IEnumerable<MessageEntity> entities)
+        private string GetMentionedUserIdToMessage(Message message)
         {
-            return (
-                from entity in entities
-                where null != entity.User
-                select entity.User.Id.ToString()
-            ).FirstOrDefault();
+            var text = message.Text;
+
+            if (text == null) return null;
+
+            if (!text.StartsWith('/')) return text;
+            
+            var parts = text.Split(' ');
+
+            if (parts.Length < 2) return text;
+
+            if (parts[1].StartsWith('@')) return text;
+
+            if (message.Entities == null) return text;
+            
+            foreach (var entity in message.Entities)
+            {
+                var u = entity.User;
+                if (u == null) continue;
+
+                var user = _userService.Get(
+                    u.Id.ToString(), 
+                    u.Id.ToString(), 
+                    message.Chat.Id.ToString()
+                );
+
+                text = parts[0] + ' ' + user.Username;
+            }
+
+            return text;
         }
     }
 }
