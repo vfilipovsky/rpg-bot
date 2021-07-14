@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -49,12 +51,23 @@ namespace RpgBot.Bot.Telegram
 
         private void OnMessage(object sender, MessageEventArgs args)
         {
+            var username = args.Message.From.Username ?? GetUsername(args.Message.Entities);
+            
             HandleMessage(
                 args.Message.Text,
                 args.Message.Chat,
                 args.Message.From.Id.ToString(),
-                args.Message.From.Username,
+                username,
                 args.Message.Chat.Id.ToString());
+        }
+
+        private static string GetUsername(IEnumerable<MessageEntity> entities)
+        {
+            return (
+                from entity in entities
+                where null != entity.User
+                select entity.User.Id.ToString()
+            ).FirstOrDefault();
         }
     }
 }

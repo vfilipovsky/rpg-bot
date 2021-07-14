@@ -35,7 +35,7 @@ namespace RpgBot.Bot
                 SendMessageAsync(chat, "Add username to your profile.");
                 return;
             }
-
+            
             if (username == null)
             {
                 return;
