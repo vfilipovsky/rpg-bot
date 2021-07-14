@@ -46,9 +46,9 @@ namespace RpgBot.Bot.Telegram
             _bot.StopReceiving();
         }
 
-        protected override Task<Message> SendMessageAsync(ChatId chat, string message)
+        protected override Task<Message> SendMessageAsync(ChatId chat, string message, string messageId = null)
         {
-            return _bot.SendTextMessageAsync(chat, message);
+            return _bot.SendTextMessageAsync(chat, message, replyToMessageId: int.Parse(messageId ?? string.Empty));
         }
 
         private void OnMessage(object sender, MessageEventArgs args)
@@ -60,7 +60,8 @@ namespace RpgBot.Bot.Telegram
                 args.Message.Chat,
                 args.Message.From.Id.ToString(),
                 args.Message.From.Username ?? args.Message.From.Id.ToString(),
-                args.Message.Chat.Id.ToString());
+                args.Message.Chat.Id.ToString(),
+                args.Message.MessageId.ToString());
         }
 
         private string GetMentionedUserIdToMessage(Message message)

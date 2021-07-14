@@ -25,7 +25,7 @@ namespace RpgBot.Command
 
             return null == userAbout 
                 ? $"User '{username}' not found." 
-                : _userService.Stringify(userAbout) + $"\n\n@{user.Username}";
+                : _userService.Stringify(userAbout);
         }
 
         public string GetName()

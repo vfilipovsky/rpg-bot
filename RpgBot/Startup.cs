@@ -39,7 +39,6 @@ namespace RpgBot
             serviceCollection.AddSingleton<TelegramCommands>();
 
             serviceCollection.AddDbContext<BotContext>(options => {
-                options.EnableSensitiveDataLogging(true);
                 options.UseSqlite(configuration.GetConnectionString("SQLiteConnection"));
             });
             

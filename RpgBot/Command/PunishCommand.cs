@@ -26,7 +26,7 @@ namespace RpgBot.Command
                 .Replace('@'.ToString(), string.Empty);
 
             if (user.StaminaPoints < Rate.PunishStaminaCost)
-                return $"Not enough stamina, need {Rate.PunishStaminaCost} ({user.StaminaPoints}). @{user.Username}";
+                return $"Not enough stamina, need {Rate.PunishStaminaCost} ({user.StaminaPoints}).";
             
             var userToPunish = _userService.Punish(username, user);
 

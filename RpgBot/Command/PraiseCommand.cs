@@ -28,7 +28,7 @@ namespace RpgBot.Command
             if (username == user.Username) return $"You cannot praise yourself. @{user.Username}";
 
             if (user.ManaPoints < Rate.PraiseManaCost)
-                return $"Not enough mana, need {Rate.PraiseManaCost} ({user.ManaPoints}). @{user.Username}";
+                return $"Not enough mana, need {Rate.PraiseManaCost} ({user.ManaPoints}).";
             
             var userToPraise = _userService.Praise(username, user);
 

@@ -21,21 +21,21 @@ namespace RpgBot.Bot
         
         public abstract void Listen();
 
-        protected abstract Task<T> SendMessageAsync(TK chat, string message);
+        protected abstract Task<T> SendMessageAsync(TK chat, string message, string messageId = null);
 
-        protected void HandleMessage(string message, TK chat, string userId, string username, string groupId)
+        protected void HandleMessage(
+            string message,
+            TK chat, 
+            string userId,
+            string username,
+            string groupId,
+            string messageId = null)
         {
             if (string.IsNullOrEmpty(message))
             {
                 return;
             }
 
-            if (username == null && message.StartsWith('/'))
-            {
-                SendMessageAsync(chat, "Add username to your profile.");
-                return;
-            }
-            
             if (username == null)
             {
                 return;
@@ -54,11 +54,11 @@ namespace RpgBot.Bot
                 foreach (var command in _commands.List())
                 {
                     if (!message.StartsWith(command.GetName())) continue;
-                    SendMessageAsync(chat, command.Run(message, user));
+                    SendMessageAsync(chat, command.Run(message, user), messageId);
                     return;
                 }
 
-                SendMessageAsync(chat, $"Command '{message}' not found. @" + username);
+                SendMessageAsync(chat, $"Command '{message}' not found. @" + username, messageId);
             }
             catch (BotException e)
             {
