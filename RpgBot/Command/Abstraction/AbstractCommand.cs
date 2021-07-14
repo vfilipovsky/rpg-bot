@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RpgBot.Exception;
 
 namespace RpgBot.Command.Abstraction
 {
@@ -10,9 +11,9 @@ namespace RpgBot.Command.Abstraction
         {
             var parts = text.Split(' ');
 
-            if (parts.Length < argsCount)
+            if (parts.Length < argsCount + 1)
             {
-                throw new ArgumentException("Wrong args, please see examples by starting type your command");
+                throw new BotException("Pass the argument to command");
             }
 
             for (var i = 0; i < argsCount; i++)

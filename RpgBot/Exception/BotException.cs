@@ -2,7 +2,7 @@
 {
     public class BotException : System.Exception
     {
-        protected BotException(string message)
+        public BotException(string message)
             : base(message)
         {
         }

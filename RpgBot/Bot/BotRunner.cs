@@ -30,6 +30,17 @@ namespace RpgBot.Bot
                 return;
             }
 
+            if (username == null && message.StartsWith('/'))
+            {
+                SendMessageAsync(chat, "Add username to your profile.");
+                return;
+            }
+
+            if (username == null)
+            {
+                return;
+            }
+            
             var user = _userService.Get(username, userId, groupId);
             
             try

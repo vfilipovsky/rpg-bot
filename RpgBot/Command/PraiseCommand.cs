@@ -25,7 +25,7 @@ namespace RpgBot.Command
                 .ElementAt(1)
                 .Replace('@'.ToString(), string.Empty);
 
-            // if (username == user.Username) return $"You cannot praise yourself. @{user.Username}";
+            if (username == user.Username) return $"You cannot praise yourself. @{user.Username}";
 
             if (user.ManaPoints < Rate.PraiseManaCost)
                 return $"Not enough mana, need {Rate.PraiseManaCost} ({user.ManaPoints}). @{user.Username}";

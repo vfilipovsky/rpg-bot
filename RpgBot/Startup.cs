@@ -28,7 +28,6 @@ namespace RpgBot
             serviceCollection.AddSingleton(configuration);
             serviceCollection.AddSingleton<TelegramBot>();
             serviceCollection.AddSingleton<IUserService, UserService>();
-            serviceCollection.AddSingleton<IGroupService, GroupService>();
 
             // commands
             serviceCollection.AddSingleton<TopCommand>();

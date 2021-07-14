@@ -22,7 +22,7 @@ namespace RpgBot.Command
         public string Run(string text, User user)
         {
             var username = GetArgs(text, ArgsCount)
-                .ElementAt(1)
+                .ElementAt(1)?
                 .Replace('@'.ToString(), string.Empty);
 
             if (user.StaminaPoints < Rate.PunishStaminaCost)

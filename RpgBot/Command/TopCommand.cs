@@ -19,7 +19,7 @@ namespace RpgBot.Command
         
         public string Run(string text, User user)
         {
-            var users = _userService.GetTopPlayers();
+            var users = _userService.GetTopPlayers(user.GroupId);
 
             var result = "";
             var counter = 1;

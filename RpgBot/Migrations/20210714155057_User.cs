@@ -2,26 +2,18 @@
 
 namespace RpgBot.Migrations
 {
-    public partial class UserAndGroup : Migration
+    public partial class User : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Groups",
+                name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
+                    GroupId = table.Column<string>(type: "TEXT", nullable: true),
                     Username = table.Column<string>(type: "TEXT", nullable: true),
                     Reputation = table.Column<int>(type: "INTEGER", nullable: false),
                     Experience = table.Column<int>(type: "INTEGER", nullable: false),
@@ -32,39 +24,24 @@ namespace RpgBot.Migrations
                     MaxManaPoints = table.Column<int>(type: "INTEGER", nullable: false),
                     StaminaPoints = table.Column<int>(type: "INTEGER", nullable: false),
                     MaxStaminaPoints = table.Column<int>(type: "INTEGER", nullable: false),
-                    MessagesCount = table.Column<int>(type: "INTEGER", nullable: false),
-                    GroupId = table.Column<string>(type: "TEXT", nullable: true)
+                    MessagesCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Groups_Id",
-                table: "Groups",
-                column: "Id",
+                name: "IX_User_UserId_GroupId",
+                table: "User",
+                columns: new[] { "UserId", "GroupId" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_GroupId",
-                table: "Users",
-                column: "GroupId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Groups");
+                name: "User");
         }
     }
 }

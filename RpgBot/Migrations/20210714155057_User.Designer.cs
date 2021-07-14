@@ -8,8 +8,8 @@ using RpgBot.Context;
 namespace RpgBot.Migrations
 {
     [DbContext(typeof(BotContext))]
-    [Migration("20210713234938_UserAndGroup")]
-    partial class UserAndGroup
+    [Migration("20210714155057_User")]
+    partial class User
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -17,23 +17,11 @@ namespace RpgBot.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.7");
 
-            modelBuilder.Entity("RpgBot.Entity.Group", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("Groups");
-                });
-
             modelBuilder.Entity("RpgBot.Entity.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Experience")
                         .HasColumnType("INTEGER");
@@ -68,28 +56,18 @@ namespace RpgBot.Migrations
                     b.Property<int>("StaminaPoints")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Username")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("UserId", "GroupId")
+                        .IsUnique();
 
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("RpgBot.Entity.User", b =>
-                {
-                    b.HasOne("RpgBot.Entity.Group", "Group")
-                        .WithMany("Users")
-                        .HasForeignKey("GroupId");
-
-                    b.Navigation("Group");
-                });
-
-            modelBuilder.Entity("RpgBot.Entity.Group", b =>
-                {
-                    b.Navigation("Users");
+                    b.ToTable("User");
                 });
 #pragma warning restore 612, 618
         }

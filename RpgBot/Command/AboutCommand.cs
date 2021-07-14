@@ -20,16 +20,12 @@ namespace RpgBot.Command
         
         public string Run(string text, User user)
         {
-            var username = GetArgs(text, ArgsCount)                
-                .ElementAt(1)
-                .Replace('@'.ToString(), string.Empty);
+            var username = GetArgs(text, ArgsCount).ElementAt(1).Replace("@", string.Empty);
+            var userAbout = _userService.GetByUsernameAndGroupId(username, user.GroupId);
 
-            var userAbout = _userService.GetByUsernameAndGroupId(username, user.Group.Id);
-
-            if (null == userAbout) return $"User '{username}' not found. @{user.Username}";
-            
-            return _userService.Stringify(userAbout) + $"\n@{user.Username}";
-
+            return null == userAbout 
+                ? $"User '{username}' not found." 
+                : _userService.Stringify(userAbout) + $"\n\n@{user.Username}";
         }
 
         public string GetName()

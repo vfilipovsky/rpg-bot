@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using RpgBot.Context;
 using RpgBot.Entity;
 using RpgBot.Level;
@@ -11,26 +10,21 @@ namespace RpgBot.Service
     public class UserService : IUserService
     {
         private readonly BotContext _context;
-        private readonly IGroupService _groupService;
 
-        public UserService(BotContext botContext, IGroupService groupService)
+        public UserService(BotContext botContext)
         {
             _context = botContext;
-            _groupService = groupService;
         }
 
         public User Create(string username, string userId, string groupId)
         {
-            var group = _groupService.Get(groupId);
-
             var user = new User()
             {
-                Group = group,
+                GroupId = groupId,
                 Username = username,
-                Id = userId,
+                UserId = userId,
             };
 
-            _context.Groups.Attach(user.Group);
             _context.Users.Add(user);
             _context.SaveChanges();
 
@@ -40,20 +34,23 @@ namespace RpgBot.Service
         public User GetByUsernameAndGroupId(string username, string groupId)
         {
             return _context.Users
-                .Include(u => u.Group)
-                .FirstOrDefault(u => u.Username == username && u.Group.Id == groupId);
+                .FirstOrDefault(u => u.Username == username && u.GroupId == groupId);
         }
-        
+
+        public User GetByUserIdAndGroupId(string userId, string groupId)
+        {
+            return _context.Users
+                .FirstOrDefault(u => u.UserId == userId && u.GroupId == groupId);
+        }
+
         public User Get(string username, string userId, string groupId)
         {
-            var user = _context.Users
-                           .Include(u => u.Group)
-                           .FirstOrDefault(u => u.Id == userId && u.Group.Id == groupId)
-                       ?? Create(username, userId, groupId);
+            var user = GetByUsernameAndGroupId(username, groupId) ?? Create(username, userId, groupId);
 
             if (user.Username == username) return user;
 
             user.Username = username;
+
             _context.Users.Update(user);
             _context.SaveChanges();
 
@@ -62,16 +59,12 @@ namespace RpgBot.Service
 
         private User Regenerate(User user)
         {
-            var hpAfterRegen = user.HealthPoints += Rate.HealthRegen;
+            var hpAfterRegen = user.HealthPoints + Rate.HealthRegen;
+            var manaAfterRegen = user.ManaPoints + Rate.ManaRegen;
+            var staminaAfterRegen = user.StaminaPoints + Rate.StaminaRegen;
 
             if (hpAfterRegen <= user.MaxHealthPoints) user.HealthPoints = hpAfterRegen;
-
-            var manaAfterRegen = user.ManaPoints += Rate.ManaRegen;
-
             if (manaAfterRegen <= user.MaxManaPoints) user.ManaPoints = manaAfterRegen;
-
-            var staminaAfterRegen = user.StaminaPoints += Rate.StaminaRegen;
-
             if (staminaAfterRegen <= user.MaxStaminaPoints) user.StaminaPoints = staminaAfterRegen;
 
             return user;
@@ -82,7 +75,7 @@ namespace RpgBot.Service
             LevelSystem.AddExp(user, Rate.ExpPerMessage);
             user.MessagesCount += 1;
 
-            if (user.MessagesCount % Rate.RegeneratePerMessages == 0)
+            if (user.MessagesCount % Rate.RegeneratePerMessages == 0) 
                 user = Regenerate(user);
 
             _context.Users.Update(user);
@@ -93,8 +86,7 @@ namespace RpgBot.Service
 
         public User Praise(string username, User user)
         {
-            var userToPraise = _context.Users
-                .FirstOrDefault(u => u.Username == username && u.Group.Id == user.Group.Id);
+            var userToPraise = GetByUsernameAndGroupId(username, user.GroupId);
 
             if (null == userToPraise) return null;
 
@@ -110,8 +102,7 @@ namespace RpgBot.Service
 
         public User Punish(string username, User user)
         {
-            var userToPunish = _context.Users
-                .FirstOrDefault(u => u.Username == username && u.Group.Id == user.Group.Id);
+            var userToPunish = GetByUsernameAndGroupId(username, user.GroupId);
 
             if (null == userToPunish) return null;
 
@@ -125,14 +116,17 @@ namespace RpgBot.Service
             return userToPunish;
         }
 
-        public IEnumerable<User> GetTopPlayers()
+        public IEnumerable<User> GetTopPlayers(string groupId)
         {
-            return _context.Users.OrderByDescending(u => u.Level);
+            return _context.Users
+                .Where(u => u.GroupId == groupId)
+                .OrderByDescending(u => u.Level);
         }
 
         public string Stringify(User user)
         {
-            return 
+            return
+                $"Id: {user.UserId}\n" +
                 $"Username: {user.Username}\n" +
                 $"Messages Count: {user.MessagesCount}\n" +
                 $"Reputation: {user.Reputation}\n" +
