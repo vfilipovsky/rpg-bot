@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
-using RpgBot.Level;
 using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
