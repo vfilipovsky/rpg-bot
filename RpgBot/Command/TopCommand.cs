@@ -27,11 +27,12 @@ namespace RpgBot.Command
             
             foreach (var u in users)
             {
-                result += 
+                result +=
                     $"No{counter}: {u.Username} / " +
                     $"Lv: {u.Level}, " +
                     $"Exp: {u.Experience}/{LevelSystem.GetExpToNextLevel(u.Level)}, " +
-                    $"Rep: {u.Reputation}\n";
+                    $"Rep: {u.Reputation}, " +
+                    $"Messages: {u.MessagesCount}\n";
 
                 counter++;
             }
