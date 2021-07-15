@@ -62,7 +62,7 @@ namespace RpgBot.Bot
             }
             catch (BotException e)
             {
-                SendMessageAsync(chat, e.Message);
+                SendMessageAsync(chat, e.Message, messageId);
             }
             catch (System.Exception e)
             {
