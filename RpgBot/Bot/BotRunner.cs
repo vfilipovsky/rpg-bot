@@ -43,12 +43,11 @@ namespace RpgBot.Bot
             }
             
             var user = _userService.Get(username, userId, groupId);
+            Advance(user, chat);
             try
             {
                 if (!message.StartsWith('/'))
                 {
-                    Advance(user, chat);
-                    
                     return;
                 }
 
@@ -56,13 +55,10 @@ namespace RpgBot.Bot
                 {
                     if (!message.StartsWith(command.GetName())) continue;
                     
-                    Advance(user, chat);
-                    
                     SendMessageAsync(chat, command.Run(message, user), messageId);
                     return;
                 }
 
-                Advance(user, chat);
                 SendMessageAsync(chat, $"Command '{message}' not found.", messageId);
             }
             catch (BotException e)
