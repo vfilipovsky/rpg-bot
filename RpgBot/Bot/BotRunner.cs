@@ -58,7 +58,7 @@ namespace RpgBot.Bot
                     return;
                 }
 
-                SendMessageAsync(chat, $"Command '{message}' not found. @" + username, messageId);
+                SendMessageAsync(chat, $"Command '{message}' not found.", messageId);
             }
             catch (BotException e)
             {
