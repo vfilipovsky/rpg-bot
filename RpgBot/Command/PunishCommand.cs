@@ -32,7 +32,7 @@ namespace RpgBot.Command
 
             return null == userToPunish 
                 ? $"User '{username}' not found" 
-                : $"@{userToPunish.Username} got punished by @{user.Username}";
+                : $"{userToPunish.Username} got punished";
         }
 
         public string GetName()
