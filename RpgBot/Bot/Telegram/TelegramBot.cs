@@ -48,7 +48,12 @@ namespace RpgBot.Bot.Telegram
 
         protected override Task<Message> SendMessageAsync(ChatId chat, string message, string messageId = null)
         {
-            return _bot.SendTextMessageAsync(chat, message, replyToMessageId: int.Parse(messageId));
+            return _bot.SendTextMessageAsync(
+                chat, 
+                message, 
+                replyToMessageId: int.Parse(messageId), 
+                disableNotification: true
+            );
         }
 
         private void OnMessage(object sender, MessageEventArgs args)
