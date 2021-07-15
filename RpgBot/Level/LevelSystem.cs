@@ -16,6 +16,11 @@ namespace RpgBot.Level
             user.MaxHealthPoints += Rate.HealthPerLevel;
             user.MaxStaminaPoints += Rate.StaminaPerLevel;
             user.MaxManaPoints += Rate.ManaPerLevel;
+            
+            user.HealthPoints = user.MaxHealthPoints;
+            user.ManaPoints = user.MaxManaPoints;
+            user.StaminaPoints = user.MaxStaminaPoints;
+            
             user.Experience -= experienceToNextLevel;
 
             return user;

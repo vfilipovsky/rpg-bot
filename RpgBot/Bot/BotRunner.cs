@@ -42,12 +42,16 @@ namespace RpgBot.Bot
             }
             
             var user = _userService.Get(username, userId, groupId);
-            
+            var userLevel = user.Level;
             try
             {
                 if (!message.StartsWith('/'))
                 {
                     _userService.AddExpForMessage(user);
+
+                    if (user.Level != userLevel)
+                        SendMessageAsync(chat, $"@{user.Username}, you have advanced to level {user.Level}!");
+                    
                     return;
                 }
 

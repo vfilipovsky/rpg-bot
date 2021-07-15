@@ -10,7 +10,7 @@
         public const int HealthPerLevel = 10;
 
         // Regeneration
-        public const int RegeneratePerMessages = 50;
+        public const int RegeneratePerMessages = 25;
         public const int ManaRegen = 5;
         public const int StaminaRegen = 5;
         public const int HealthRegen = 5;

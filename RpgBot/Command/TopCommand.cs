@@ -9,7 +9,7 @@ namespace RpgBot.Command
     {
         private const int ArgsCount = 0;
         private const string Name = "/top";
-        private const string Description = "List of top players";
+        private const string Description = "Top players list";
 
         private readonly IUserService _userService;
 
