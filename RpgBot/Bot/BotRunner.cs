@@ -42,11 +42,11 @@ namespace RpgBot.Bot
             }
             
             var user = _userService.Get(username, userId, groupId);
-            var userLevel = user.Level;
             try
             {
                 if (!message.StartsWith('/'))
                 {
+                    var userLevel = user.Level;
                     _userService.AddExpForMessage(user);
 
                     if (user.Level != userLevel)
