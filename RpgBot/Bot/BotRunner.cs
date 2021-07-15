@@ -44,6 +44,7 @@ namespace RpgBot.Bot
             
             var user = _userService.Get(username, userId, groupId);
             Advance(user, chat);
+
             try
             {
                 if (!message.StartsWith('/'))
