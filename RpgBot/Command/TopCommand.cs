@@ -32,7 +32,7 @@ namespace RpgBot.Command
                     $"Lv: {u.Level}, " +
                     $"Exp: {u.Experience}/{LevelSystem.GetExpToNextLevel(u.Level)}, " +
                     $"Rep: {u.Reputation}, " +
-                    $"Messages: {u.MessagesCount}\n";
+                    $"Msg: {u.MessagesCount}\n";
 
                 counter++;
             }
