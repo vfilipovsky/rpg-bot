@@ -10,7 +10,7 @@ namespace RpgBot.Level
             user.Experience += exp;
             var experienceToNextLevel = GetExpToNextLevel(user.Level);
 
-            if (user.Experience <= experienceToNextLevel) return user;
+            if (user.Experience < experienceToNextLevel) return user;
             
             user.Level += 1;
             user.MaxHealthPoints += Rate.HealthPerLevel;
