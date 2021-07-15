@@ -61,7 +61,7 @@ namespace RpgBot.Bot.Telegram
 
         private void OnMessage(object sender, MessageEventArgs args)
         {
-            var text = GetMentionedUserIdToMessage(args.Message);
+            var text = ParseMessage(args.Message);
 
             HandleMessage(
                 text,
@@ -72,14 +72,18 @@ namespace RpgBot.Bot.Telegram
                 args.Message.MessageId.ToString());
         }
 
-        private string GetMentionedUserIdToMessage(Message message)
+        private string ParseMessage(Message message)
         {
+            if (message.Sticker != null) return "sticker";
+
+            if (message.Photo != null && message.Text == null) return "image";
+            
             var text = message.Text;
 
             if (text == null) return null;
 
             if (!text.StartsWith('/')) return text;
-            
+
             var parts = text.Split(' ');
 
             if (parts.Length < 2) return text;

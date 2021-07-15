@@ -34,7 +34,7 @@ namespace RpgBot.Command
 
             return null == userToPraise 
                 ? $"User '{username}' not found" 
-                : $"{userToPraise.Username} got praised";
+                : $"{userToPraise.Username} got praised. {userToPraise.Reputation} reputation in total.";
         }
 
         public string GetName()
