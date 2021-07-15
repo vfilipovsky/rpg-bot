@@ -129,9 +129,9 @@ namespace RpgBot.Service
         {
             return
                 $"Id: {user.UserId}\n" +
-                $"Username: {user.Username}\n" +
-                $"Messages Count: {user.MessagesCount}\n" +
-                $"Reputation: {user.Reputation}\n" +
+                $"Name: {user.Username}\n" +
+                $"Msg: {user.MessagesCount}\n" +
+                $"Rep: {user.Reputation}\n" +
                 $"LVL: {user.Level}\n" +
                 $"Exp: {user.Experience}/{LevelSystem.GetExpToNextLevel(user.Level)}\n" +
                 $"HP: {user.HealthPoints}/{user.MaxHealthPoints}\n" +
