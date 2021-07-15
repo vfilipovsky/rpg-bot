@@ -7,6 +7,7 @@ using RpgBot.Service.Abstraction;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
+using User = RpgBot.Entity.User;
 
 namespace RpgBot.Bot.Telegram
 {
@@ -55,6 +56,17 @@ namespace RpgBot.Bot.Telegram
                 replyToMessageId: int.Parse(messageId), 
                 disableNotification: true
             );
+        }
+
+        protected override User Advance(User user, ChatId chat)
+        {
+            var userLevel = user.Level;
+            _userService.AddExpForMessage(user);
+
+            if (user.Level != userLevel)
+                SendMessageAsync(chat, $"@{user.Username}, you have advanced to level {user.Level}!");
+
+            return user;
         }
 
         private void OnMessage(object sender, MessageEventArgs args)

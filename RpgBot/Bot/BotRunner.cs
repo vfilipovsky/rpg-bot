@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using RpgBot.Command.Abstraction;
+using RpgBot.Entity;
 using RpgBot.Exception;
 using RpgBot.Service.Abstraction;
 
@@ -20,9 +21,9 @@ namespace RpgBot.Bot
         }
         
         public abstract void Listen();
-
         protected abstract Task<T> SendMessageAsync(TK chat, string message, string messageId = null);
-
+        protected abstract User Advance(User user, TK chat);
+        
         protected void HandleMessage(
             string message,
             TK chat, 
@@ -46,11 +47,7 @@ namespace RpgBot.Bot
             {
                 if (!message.StartsWith('/'))
                 {
-                    var userLevel = user.Level;
-                    _userService.AddExpForMessage(user);
-
-                    if (user.Level != userLevel)
-                        SendMessageAsync(chat, $"@{user.Username}, you have advanced to level {user.Level}!");
+                    Advance(user, chat);
                     
                     return;
                 }
@@ -58,10 +55,14 @@ namespace RpgBot.Bot
                 foreach (var command in _commands.List())
                 {
                     if (!message.StartsWith(command.GetName())) continue;
+                    
+                    Advance(user, chat);
+                    
                     SendMessageAsync(chat, command.Run(message, user), messageId);
                     return;
                 }
 
+                Advance(user, chat);
                 SendMessageAsync(chat, $"Command '{message}' not found.", messageId);
             }
             catch (BotException e)
