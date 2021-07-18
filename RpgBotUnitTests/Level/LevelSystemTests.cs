@@ -11,7 +11,7 @@ namespace RpgBotUnitTests.Level
     {
         private User _user;
         private Mock<IRate> _mockRate;
-        private LevelSystem _levelSystem;
+        private ILevelSystem _levelSystem;
         private int _getExpFormulaResult;
 
         [SetUp]
