@@ -8,6 +8,7 @@ namespace RpgBot.Command
     public class AboutCommand : AbstractCommand, ICommand
     {
         private const int ArgsCount = 1;
+        private const int LevelFrom = 1;
         private const string Name = "/about";
         private const string Description = "Show details about target user";
 
@@ -41,6 +42,11 @@ namespace RpgBot.Command
         public int GetArgsCount()
         {
             return ArgsCount;
+        }
+
+        public int GetLevelFrom()
+        {
+            return LevelFrom;
         }
     }
 }

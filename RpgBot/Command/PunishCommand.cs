@@ -9,6 +9,7 @@ namespace RpgBot.Command
     public class PunishCommand : AbstractCommand, ICommand
     {
         private const int ArgsCount = 1;
+        private const int LevelFrom = 3;
         private const string Name = "/punish";
         private const string Description = "Punish @user and substracts 1 reputation from him";
         
@@ -48,6 +49,11 @@ namespace RpgBot.Command
         public int GetArgsCount()
         {
             return ArgsCount;
+        }
+
+        public int GetLevelFrom()
+        {
+            return LevelFrom;
         }
     }
 }

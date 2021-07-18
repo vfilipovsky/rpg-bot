@@ -8,5 +8,6 @@ namespace RpgBot.Command.Abstraction
         public string GetName();
         public string GetDescription();
         public int GetArgsCount();
+        public int GetLevelFrom();
     }
 }

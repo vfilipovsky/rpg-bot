@@ -8,6 +8,7 @@ namespace RpgBot.Command
     public class TopCommand : AbstractCommand, ICommand
     {
         private const int ArgsCount = 0;
+        private const int LevelFrom = 1;
         private const string Name = "/top";
         private const string Description = "Top players list";
 
@@ -52,6 +53,11 @@ namespace RpgBot.Command
         public int GetArgsCount()
         {
             return ArgsCount;
+        }
+
+        public int GetLevelFrom()
+        {
+            return LevelFrom;
         }
     }
 }

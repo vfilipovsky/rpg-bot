@@ -56,6 +56,12 @@ namespace RpgBot.Bot
                 {
                     if (!message.StartsWith(command.GetName())) continue;
                     
+                    if (command.GetLevelFrom() > user.Level)
+                    {
+                        SendMessageAsync(chat, $"Command available from level {command.GetLevelFrom()}");
+                        return;
+                    }
+                    
                     SendMessageAsync(chat, command.Run(message, user), messageId);
                     return;
                 }

@@ -1,14 +1,13 @@
 ﻿using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
-using RpgBot.Level;
 using RpgBot.Service.Abstraction;
-using SQLitePCL;
 
 namespace RpgBot.Command
 {
     public class MeCommand : AbstractCommand, ICommand
     {
         private const int ArgsCount = 0;
+        private const int LevelFrom = 1;
         private const string Name = "/me";
         private const string Description = "Show details about you";
 
@@ -37,6 +36,11 @@ namespace RpgBot.Command
         public int GetArgsCount()
         {
             return ArgsCount;
+        }
+
+        public int GetLevelFrom()
+        {
+            return LevelFrom;
         }
     }
 }

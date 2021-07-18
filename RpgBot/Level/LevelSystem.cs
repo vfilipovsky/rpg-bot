@@ -8,10 +8,12 @@ namespace RpgBot.Level
         public static User AddExp(User user, int exp)
         {
             user.Experience += exp;
-            var experienceToNextLevel = GetExpToNextLevel(user.Level);
 
-            if (user.Experience < experienceToNextLevel) return user;
-            
+            return user.Experience < GetExpToNextLevel(user.Level) ? user : LevelUp(user);
+        }
+
+        public static User LevelUp(User user)
+        {
             user.Level += 1;
             user.MaxHealthPoints += Rate.HealthPerLevel;
             user.MaxStaminaPoints += Rate.StaminaPerLevel;
@@ -21,11 +23,11 @@ namespace RpgBot.Level
             user.ManaPoints = user.MaxManaPoints;
             user.StaminaPoints = user.MaxStaminaPoints;
             
-            user.Experience -= experienceToNextLevel;
+            user.Experience = 0;
 
             return user;
         }
-
+        
         public static int GetExpToNextLevel(int currentLevel)
         {
             return (int)(Math.Pow(Rate.XpBase * currentLevel, Rate.Scale));
