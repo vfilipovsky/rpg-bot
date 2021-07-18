@@ -1,6 +1,6 @@
 ﻿using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
-using RpgBot.Level;
+using RpgBot.Level.Abstraction;
 using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
@@ -13,10 +13,12 @@ namespace RpgBot.Command
         private const string Description = "Top players list";
 
         private readonly IUserService _userService;
+        private readonly ILevelSystem _levelSystem;
 
-        public TopCommand(IUserService userService)
+        public TopCommand(IUserService userService, ILevelSystem levelSystem)
         {
             _userService = userService;
+            _levelSystem = levelSystem;
         }
         
         public string Run(string text, User user)
@@ -30,7 +32,7 @@ namespace RpgBot.Command
             {
                 result +=
                     $"| №{counter} | {u.Username} | Lv. {u.Level} | " +
-                    $"Exp: {u.Experience}/{LevelSystem.GetExpToNextLevel(u.Level)} | " +
+                    $"Exp: {u.Experience}/{_levelSystem.GetExpToNextLevel(u.Level)} | " +
                     $"Rep: {u.Reputation} | " +
                     $"Msg: {u.MessagesCount} |\n\n";
 

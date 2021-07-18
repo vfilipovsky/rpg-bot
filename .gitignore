@@ -8,3 +8,5 @@ TelegramRpgBot/.env
 TelegramRpgBot/bin
 TelegramRpgBot/obj
 TelegramRpgBot.sln.DotSettings.user
+RpgBotUnitTests/obj
+RpgBotUnitTests/bin

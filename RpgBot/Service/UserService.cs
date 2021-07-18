@@ -2,7 +2,7 @@
 using System.Linq;
 using RpgBot.Context;
 using RpgBot.Entity;
-using RpgBot.Level;
+using RpgBot.Level.Abstraction;
 using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Service
@@ -10,10 +10,14 @@ namespace RpgBot.Service
     public class UserService : IUserService
     {
         private readonly BotContext _context;
+        private readonly IRate _rate;
+        private readonly ILevelSystem _levelSystem;
 
-        public UserService(BotContext botContext)
+        public UserService(BotContext botContext, IRate rate, ILevelSystem levelSystem)
         {
             _context = botContext;
+            _rate = rate;
+            _levelSystem = levelSystem;
         }
 
         public User Create(string username, string userId, string groupId)
@@ -59,9 +63,9 @@ namespace RpgBot.Service
 
         private User Regenerate(User user)
         {
-            var hpAfterRegen = user.HealthPoints + Rate.HealthRegen;
-            var manaAfterRegen = user.ManaPoints + Rate.ManaRegen;
-            var staminaAfterRegen = user.StaminaPoints + Rate.StaminaRegen;
+            var hpAfterRegen = user.HealthPoints + _rate.HealthRegen;
+            var manaAfterRegen = user.ManaPoints + _rate.ManaRegen;
+            var staminaAfterRegen = user.StaminaPoints + _rate.StaminaRegen;
 
             if (hpAfterRegen <= user.MaxHealthPoints) user.HealthPoints = hpAfterRegen;
             if (manaAfterRegen <= user.MaxManaPoints) user.ManaPoints = manaAfterRegen;
@@ -72,10 +76,10 @@ namespace RpgBot.Service
 
         public User AddExpForMessage(User user)
         {
-            LevelSystem.AddExp(user, Rate.ExpPerMessage);
+            _levelSystem.AddExp(user, _rate.ExpPerMessage);
             user.MessagesCount += 1;
 
-            if (user.MessagesCount % Rate.RegeneratePerMessages == 0) 
+            if (user.MessagesCount % _rate.RegeneratePerMessages == 0) 
                 user = Regenerate(user);
 
             _context.Users.Update(user);
@@ -90,8 +94,8 @@ namespace RpgBot.Service
 
             if (null == userToPraise) return null;
 
-            user.ManaPoints -= Rate.PraiseManaCost;
-            userToPraise.Reputation += Rate.ReputationPerPraise;
+            user.ManaPoints -= _rate.PraiseManaCost;
+            userToPraise.Reputation += _rate.ReputationPerPraise;
 
             _context.Users.Update(user);
             _context.Users.Update(userToPraise);
@@ -106,8 +110,8 @@ namespace RpgBot.Service
 
             if (null == userToPunish) return null;
 
-            user.StaminaPoints -= Rate.PunishStaminaCost;
-            userToPunish.Reputation += Rate.ReputationPerPunish;
+            user.StaminaPoints -= _rate.PunishStaminaCost;
+            userToPunish.Reputation += _rate.ReputationPerPunish;
 
             _context.Users.Update(user);
             _context.Users.Update(userToPunish);
@@ -133,7 +137,7 @@ namespace RpgBot.Service
                 $"Msg: {user.MessagesCount}\n" +
                 $"Rep: {user.Reputation}\n" +
                 $"LVL: {user.Level}\n" +
-                $"Exp: {user.Experience}/{LevelSystem.GetExpToNextLevel(user.Level)}\n" +
+                $"Exp: {user.Experience}/{_levelSystem.GetExpToNextLevel(user.Level)}\n" +
                 $"HP: {user.HealthPoints}/{user.MaxHealthPoints}\n" +
                 $"MP: {user.ManaPoints}/{user.MaxManaPoints}\n" +
                 $"SP: {user.StaminaPoints}/{user.MaxStaminaPoints}";

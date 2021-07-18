@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
-using RpgBot.Level;
+using RpgBot.Level.Abstraction;
 using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
@@ -14,10 +14,12 @@ namespace RpgBot.Command
         private const string Description = "Praise user and give him +1 to reputation.";
         
         private readonly IUserService _userService;
+        private readonly IRate _rate;
         
-        public PraiseCommand( IUserService userService)
+        public PraiseCommand(IUserService userService, IRate rate)
         {
             _userService = userService;
+            _rate = rate;
         }
         
         public string Run(string text, User user)
@@ -28,8 +30,8 @@ namespace RpgBot.Command
 
             if (username == user.Username) return $"You cannot praise yourself";
 
-            if (user.ManaPoints < Rate.PraiseManaCost)
-                return $"Not enough mana, need {Rate.PraiseManaCost} ({user.ManaPoints}).";
+            if (user.ManaPoints < _rate.PraiseManaCost)
+                return $"Not enough mana, need {_rate.PraiseManaCost} ({user.ManaPoints}).";
             
             var userToPraise = _userService.Praise(username, user);
 

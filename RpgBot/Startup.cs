@@ -8,6 +8,8 @@ using RpgBot.Command;
 using RpgBot.Command.Abstraction;
 using RpgBot.Context;
 using RpgBot.EntryPoint;
+using RpgBot.Level;
+using RpgBot.Level.Abstraction;
 using RpgBot.Service;
 using RpgBot.Service.Abstraction;
 
@@ -28,7 +30,9 @@ namespace RpgBot
             serviceCollection.AddSingleton(configuration);
             serviceCollection.AddSingleton<TelegramBot>();
             serviceCollection.AddSingleton<IUserService, UserService>();
-
+            serviceCollection.AddSingleton<IRate, Rate>();
+            serviceCollection.AddSingleton<ILevelSystem, LevelSystem>();
+            
             // commands
             serviceCollection.AddSingleton<TopCommand>();
             serviceCollection.AddSingleton<AboutCommand>();

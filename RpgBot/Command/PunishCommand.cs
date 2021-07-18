@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
-using RpgBot.Level;
+using RpgBot.Level.Abstraction;
 using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
@@ -14,10 +14,12 @@ namespace RpgBot.Command
         private const string Description = "Punish @user and substracts 1 reputation from him";
         
         private readonly IUserService _userService;
+        private readonly IRate _rate;
         
-        public PunishCommand(IUserService userService)
+        public PunishCommand(IUserService userService, IRate rate)
         {
             _userService = userService;
+            _rate = rate;
         }
         
         public string Run(string text, User user)
@@ -26,8 +28,8 @@ namespace RpgBot.Command
                 .ElementAt(1)?
                 .Replace('@'.ToString(), string.Empty);
 
-            if (user.StaminaPoints < Rate.PunishStaminaCost)
-                return $"Not enough stamina, need {Rate.PunishStaminaCost} ({user.StaminaPoints}).";
+            if (user.StaminaPoints < _rate.PunishStaminaCost)
+                return $"Not enough stamina, need {_rate.PunishStaminaCost} ({user.StaminaPoints}).";
             
             var userToPunish = _userService.Punish(username, user);
 

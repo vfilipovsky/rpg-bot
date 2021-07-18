@@ -1,31 +1,31 @@
-﻿namespace RpgBot.Level
+﻿using RpgBot.Level.Abstraction;
+
+namespace RpgBot.Level
 {
-    public static class Rate
+    public class Rate : IRate
     {
         // Experience
-        public const float Scale = 1.1f;
-        public const float XpBase = 100.0f;
-        public const int StaminaPerLevel = 10;
-        public const int ManaPerLevel = 10;
-        public const int HealthPerLevel = 10;
+        public float Scale { get; set; } = 1.1f;
+        public float XpBase { get; set; } = 100.0f;
+        public int StaminaPerLevel { get; set; } = 10;
+        public int ManaPerLevel { get; set; } =  10;
+        public int HealthPerLevel { get; set; } =  10;
 
         // Regeneration
-        public const int RegeneratePerMessages = 25;
-        public const int ManaRegen = 5;
-        public const int StaminaRegen = 5;
-        public const int HealthRegen = 5;
+        public int RegeneratePerMessages { get; set; } =  25;
+        public int ManaRegen { get; set; } =  5;
+        public int StaminaRegen { get; set; } =  5;
+        public int HealthRegen { get; set; } =  5;
         
         // Message
-        public const int ExpPerMessage = 1;
-        public const int ExpPerImage = 1;
+        public int ExpPerMessage { get; set; } =  1;
         
         // Praise
-        public const int ReputationPerPraise = 1;
-        public const int PraiseManaCost = 25;
+        public int ReputationPerPraise { get; set; } =  1;
+        public int PraiseManaCost { get; set; } =  25;
         
         // Punish
-        public const int ReputationPerPunish = -1;
-        public const int PunishStaminaCost = 25;
-
+        public int ReputationPerPunish { get; set; } =  -1;
+        public int PunishStaminaCost { get; set; } =  25;
     }
 }
