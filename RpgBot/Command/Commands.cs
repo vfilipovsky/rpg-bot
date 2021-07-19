@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using RpgBot.Command.Abstraction;
 
 namespace RpgBot.Command
@@ -14,9 +15,9 @@ namespace RpgBot.Command
         private readonly DeleteCommandAliasCommand _deleteCommandAliasCommand;
 
         public Commands(
-            PraiseCommand praise, 
-            PunishCommand punish, 
-            TopCommand top, 
+            PraiseCommand praise,
+            PunishCommand punish,
+            TopCommand top,
             MeCommand me, 
             AboutCommand about,
             CreateCommandAliasCommand createCommandAlias,
@@ -44,5 +45,20 @@ namespace RpgBot.Command
                 _deleteCommandAliasCommand,
             };
         }
+
+        public static IEnumerable<string> ListNames()
+        {
+            return new[]
+            {
+                "praise",
+                "me",
+                "punish",
+                "top",
+                "about",
+                "alias",
+                "dalias",
+            };
+        }
+        
     }
 }

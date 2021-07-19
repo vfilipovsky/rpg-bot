@@ -42,6 +42,7 @@ namespace RpgBot
             serviceCollection.AddSingleton<PraiseCommand>();
             serviceCollection.AddSingleton<PunishCommand>();
             serviceCollection.AddSingleton<MeCommand>();
+
             serviceCollection.AddSingleton<ICommands, Commands>();
             serviceCollection.AddSingleton<TelegramCommands>();
 

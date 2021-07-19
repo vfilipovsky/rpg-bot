@@ -9,7 +9,7 @@ namespace RpgBot.Command
         public string Name { get; set; } = "/me";
         public string Description { get; set; } = "Show details about you";
         public int ArgsCount { get; set; } = 0;
-        public int LevelFrom { get; set; } = 1;
+        public int RequiredLevel { get; set; } = 1;
 
         private readonly IUserService _userService;
 

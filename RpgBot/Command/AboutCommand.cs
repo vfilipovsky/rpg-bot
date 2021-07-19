@@ -10,7 +10,7 @@ namespace RpgBot.Command
         public string Name { get; set; } = "/about";
         public string Description { get; set; } = "Show details about target user";
         public int ArgsCount { get; set; } = 1;
-        public int LevelFrom { get; set; } = 1;
+        public int RequiredLevel { get; set; } = 1;
 
         private readonly IUserService _userService;
 

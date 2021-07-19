@@ -7,10 +7,10 @@ namespace RpgBot.Command
 {
     public class DeleteCommandAliasCommand : AbstractCommand, ICommand
     {
-        public string Name { get; set; } = "/delete-alias";
-        public string Description { get; set; } = "Removes alias";
+        public string Name { get; set; } = "/dalias";
+        public string Description { get; set; } = "Remove alias";
         public int ArgsCount { get; set; } = 1;
-        public int LevelFrom { get; set; } = 3;
+        public int RequiredLevel { get; set; } = 1;
 
         private readonly ICommandAliasService _commandAliasService;
 

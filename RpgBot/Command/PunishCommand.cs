@@ -11,7 +11,7 @@ namespace RpgBot.Command
         public string Name { get; set; } = "/punish";
         public string Description { get; set; } = "Punish @user and subtracts reputation from him";
         public int ArgsCount { get; set; } = 1;
-        public int LevelFrom { get; set; } = 3;
+        public int RequiredLevel { get; set; } = 3;
 
         private readonly IUserService _userService;
         private readonly IRate _rate;

@@ -10,7 +10,7 @@ namespace RpgBot.Command
         public string Name { get; set; } = "/top";
         public string Description { get; set; } = "Top players list";
         public int ArgsCount { get; set; } = 0;
-        public int LevelFrom { get; set; } = 1;
+        public int RequiredLevel { get; set; } = 1;
 
         private readonly IUserService _userService;
         private readonly ILevelSystem _levelSystem;
