@@ -13,6 +13,7 @@ namespace RpgBot.Command
         private readonly AboutCommand _aboutCommand;
         private readonly CreateCommandAliasCommand _createCommandAliasCommand;
         private readonly DeleteCommandAliasCommand _deleteCommandAliasCommand;
+        private readonly ListAliasesCommand _listAliasesCommand;
 
         public Commands(
             PraiseCommand praise,
@@ -21,7 +22,8 @@ namespace RpgBot.Command
             MeCommand me, 
             AboutCommand about,
             CreateCommandAliasCommand createCommandAlias,
-            DeleteCommandAliasCommand deleteCommandAlias)
+            DeleteCommandAliasCommand deleteCommandAlias, 
+            ListAliasesCommand listAliasesCommand)
         {
             _praiseCommand = praise;
             _punishCommand = punish;
@@ -30,6 +32,7 @@ namespace RpgBot.Command
             _aboutCommand = about;
             _createCommandAliasCommand = createCommandAlias;
             _deleteCommandAliasCommand = deleteCommandAlias;
+            _listAliasesCommand = listAliasesCommand;
         }
 
         public IEnumerable<ICommand> List()
@@ -43,6 +46,7 @@ namespace RpgBot.Command
                 _aboutCommand,
                 _createCommandAliasCommand,
                 _deleteCommandAliasCommand,
+                _listAliasesCommand,
             };
         }
 
@@ -57,6 +61,7 @@ namespace RpgBot.Command
                 "about",
                 "alias",
                 "dalias",
+                "lalias",
             };
         }
         

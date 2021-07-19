@@ -37,6 +37,7 @@ namespace RpgBot
             // commands
             serviceCollection.AddSingleton<CreateCommandAliasCommand>();
             serviceCollection.AddSingleton<DeleteCommandAliasCommand>();
+            serviceCollection.AddSingleton<ListAliasesCommand>();
             serviceCollection.AddSingleton<TopCommand>();
             serviceCollection.AddSingleton<AboutCommand>();
             serviceCollection.AddSingleton<PraiseCommand>();

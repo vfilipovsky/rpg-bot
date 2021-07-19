@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using RpgBot.Context;
 using RpgBot.Entity;
 using RpgBot.Exception;
@@ -44,7 +45,12 @@ namespace RpgBot.Service
 
             return commandAlias;
         }
-        
+
+        public IEnumerable<CommandAlias> List()
+        {
+            return _botContext.CommandAliases.ToList();
+        }
+
         public CommandAlias Delete(string alias)
         {
             var exists = Get(alias);

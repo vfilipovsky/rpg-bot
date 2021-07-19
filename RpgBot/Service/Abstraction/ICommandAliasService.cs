@@ -1,4 +1,6 @@
-﻿using RpgBot.Entity;
+﻿using System.Collections;
+using System.Collections.Generic;
+using RpgBot.Entity;
 
 namespace RpgBot.Service.Abstraction
 {
@@ -8,5 +10,6 @@ namespace RpgBot.Service.Abstraction
         public CommandAlias Create(string alias, string commandName);
         public CommandAlias Delete(string alias);
         public CommandAlias Delete(CommandAlias commandAlias);
+        public IEnumerable<CommandAlias> List();
     }
 }
