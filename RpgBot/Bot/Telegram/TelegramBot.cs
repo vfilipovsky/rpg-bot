@@ -98,11 +98,13 @@ namespace RpgBot.Bot.Telegram
 
             var parts = text.Split(' ');
 
-            if (parts.Length < 2) return text;
+            if (parts[0].Contains('@')) parts[0] = parts[0].Split('@')[0];
+            
+            if (parts.Length < 2) return parts[0];
 
-            if (parts[1].StartsWith('@')) return text;
+            if (parts[1].StartsWith('@')) return string.Join(' ', parts);
 
-            if (message.Entities == null) return text;
+            if (message.Entities == null) return string.Join(' ', parts);;
 
             foreach (var entity in message.Entities)
             {
@@ -114,7 +116,7 @@ namespace RpgBot.Bot.Telegram
                 text = parts[0] + ' ' + user.Username;
             }
 
-            return text;
+            return string.Join(' ', parts);
         }
     }
 }
