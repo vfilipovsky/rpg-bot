@@ -107,11 +107,7 @@ namespace RpgBot.Bot.Telegram
                 var u = entity.User;
                 if (u == null) continue;
 
-                var user = _userService.Get(
-                    u.Id.ToString(), 
-                    u.Id.ToString(), 
-                    message.Chat.Id.ToString()
-                );
+                var user = _userService.Get(u.Id.ToString(), u.Id.ToString());
 
                 text = parts[0] + ' ' + user.Username;
             }

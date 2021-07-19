@@ -22,7 +22,7 @@ namespace RpgBot.Command
         public string Run(string text, User user)
         {
             var username = GetArgs(text, ArgsCount).ElementAt(1).Replace("@", string.Empty);
-            var userAbout = _userService.GetByUsernameAndGroupId(username, user.GroupId);
+            var userAbout = _userService.GetByUsername(username);
 
             return null == userAbout 
                 ? $"User '{username}' not found." 

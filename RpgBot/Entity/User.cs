@@ -7,7 +7,6 @@ namespace RpgBot.Entity
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public string GroupId { get; set; }
         public string Username { get; set; }
         public int Reputation { get; set; } = 1;
         public int Experience { get; set; } = 0;

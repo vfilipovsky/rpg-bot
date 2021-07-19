@@ -42,8 +42,9 @@ namespace RpgBot.Bot
                 return;
             }
             
-            var user = _userService.Get(username, userId, groupId);
-            Advance(user, chat);
+            var user = _userService.Get(username, userId);
+            
+            if (user.UserId != groupId) Advance(user, chat);
 
             try
             {

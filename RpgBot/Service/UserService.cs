@@ -20,11 +20,10 @@ namespace RpgBot.Service
             _levelSystem = levelSystem;
         }
 
-        public User Create(string username, string userId, string groupId)
+        public User Create(string username, string userId)
         {
             var user = new User()
             {
-                GroupId = groupId,
                 Username = username,
                 UserId = userId,
             };
@@ -35,21 +34,21 @@ namespace RpgBot.Service
             return user;
         }
 
-        public User GetByUsernameAndGroupId(string username, string groupId)
+        public User GetByUsername(string username)
         {
             return _context.Users
-                .FirstOrDefault(u => u.Username == username && u.GroupId == groupId);
+                .FirstOrDefault(u => u.Username == username);
         }
 
-        public User GetByUserIdAndGroupId(string userId, string groupId)
+        public User GetByUserId(string userId)
         {
             return _context.Users
-                .FirstOrDefault(u => u.UserId == userId && u.GroupId == groupId);
+                .FirstOrDefault(u => u.UserId == userId);
         }
 
-        public User Get(string username, string userId, string groupId)
+        public User Get(string username, string userId)
         {
-            var user = GetByUserIdAndGroupId(userId, groupId) ?? Create(username, userId, groupId);
+            var user = GetByUserId(userId) ?? Create(username, userId);
 
             if (user.Username == username) return user;
 
@@ -90,7 +89,7 @@ namespace RpgBot.Service
 
         public User Praise(string username, User user)
         {
-            var userToPraise = GetByUsernameAndGroupId(username, user.GroupId);
+            var userToPraise = GetByUsername(username);
 
             if (null == userToPraise) return null;
 
@@ -106,7 +105,7 @@ namespace RpgBot.Service
 
         public User Punish(string username, User user)
         {
-            var userToPunish = GetByUsernameAndGroupId(username, user.GroupId);
+            var userToPunish = GetByUsername(username);
 
             if (null == userToPunish) return null;
 
@@ -120,10 +119,9 @@ namespace RpgBot.Service
             return userToPunish;
         }
 
-        public IEnumerable<User> GetTopPlayers(string groupId)
+        public IEnumerable<User> GetTopPlayers()
         {
             return _context.Users
-                .Where(u => u.GroupId == groupId)
                 .OrderByDescending(u => u.Level)
                 .ThenByDescending(u => u.Reputation)
                 .ThenByDescending(u => u.Experience);
