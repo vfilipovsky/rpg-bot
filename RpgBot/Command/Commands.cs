@@ -61,7 +61,7 @@ namespace RpgBot.Command
                 "about",
                 "alias",
                 "dalias",
-                "lalias",
+                "aliases",
             };
         }
         

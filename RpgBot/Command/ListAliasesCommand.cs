@@ -7,7 +7,7 @@ namespace RpgBot.Command
 {
     public class ListAliasesCommand : AbstractCommand, ICommand
     {
-        public string Name { get; set; } = "/lalias";
+        public string Name { get; set; } = "/aliases";
         public string Description { get; set; } = "Lists all aliases";
         public int ArgsCount { get; set; } = 0;
         public int RequiredLevel { get; set; } = 1;
