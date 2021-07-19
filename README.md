@@ -1,4 +1,4 @@
-﻿##RPG bot for Telegram and Discord chats/channels.
+﻿## RPG bot for Telegram and Discord chats/channels.
 
 This Project is made to practice .NET, NUnit with Moq and using it for fun with friends in our telegram group.
 
