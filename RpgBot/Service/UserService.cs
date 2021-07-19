@@ -49,7 +49,7 @@ namespace RpgBot.Service
 
         public User Get(string username, string userId, string groupId)
         {
-            var user = GetByUsernameAndGroupId(username, groupId) ?? Create(username, userId, groupId);
+            var user = GetByUserIdAndGroupId(userId, groupId) ?? Create(username, userId, groupId);
 
             if (user.Username == username) return user;
 
