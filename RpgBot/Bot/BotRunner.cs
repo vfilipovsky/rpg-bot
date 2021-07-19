@@ -52,9 +52,11 @@ namespace RpgBot.Bot
                     return;
                 }
 
+                var commandName = message.Split(' ')[0];
+                
                 foreach (var command in _commands.List())
                 {
-                    if (!message.StartsWith(command.GetName())) continue;
+                    if (commandName != command.GetName()) continue;
                     
                     if (command.GetLevelFrom() > user.Level)
                     {
