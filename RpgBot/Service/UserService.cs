@@ -53,7 +53,7 @@ namespace RpgBot.Service
 
             if (user.Username == username) return user;
 
-            user.Username = username;
+            user.Username = username ?? (user.Username = user.Id.ToString());
 
             _context.Users.Update(user);
             _context.SaveChanges();
