@@ -8,11 +8,11 @@ namespace RpgBot.Command
 {
     public class PunishCommand : AbstractCommand, ICommand
     {
-        private const int ArgsCount = 1;
-        private const int LevelFrom = 3;
-        private const string Name = "/punish";
-        private const string Description = "Punish @user and substracts 1 reputation from him";
-        
+        public string Name { get; set; } = "/punish";
+        public string Description { get; set; } = "Punish @user and subtracts reputation from him";
+        public int ArgsCount { get; set; } = 1;
+        public int LevelFrom { get; set; } = 3;
+
         private readonly IUserService _userService;
         private readonly IRate _rate;
         
@@ -36,26 +36,6 @@ namespace RpgBot.Command
             return null == userToPunish 
                 ? $"User '{username}' not found" 
                 : $"{userToPunish.Username} got punished. {userToPunish.Reputation} reputation in total.";
-        }
-
-        public string GetName()
-        {
-            return Name;
-        }
-
-        public string GetDescription()
-        {
-            return Description;
-        }
-
-        public int GetArgsCount()
-        {
-            return ArgsCount;
-        }
-
-        public int GetLevelFrom()
-        {
-            return LevelFrom;
         }
     }
 }

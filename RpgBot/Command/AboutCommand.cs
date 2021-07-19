@@ -7,10 +7,10 @@ namespace RpgBot.Command
 {
     public class AboutCommand : AbstractCommand, ICommand
     {
-        private const int ArgsCount = 1;
-        private const int LevelFrom = 1;
-        private const string Name = "/about";
-        private const string Description = "Show details about target user";
+        public string Name { get; set; } = "/about";
+        public string Description { get; set; } = "Show details about target user";
+        public int ArgsCount { get; set; } = 1;
+        public int LevelFrom { get; set; } = 1;
 
         private readonly IUserService _userService;
 
@@ -27,26 +27,6 @@ namespace RpgBot.Command
             return null == userAbout 
                 ? $"User '{username}' not found." 
                 : _userService.Stringify(userAbout);
-        }
-
-        public string GetName()
-        {
-            return Name;
-        }
-
-        public string GetDescription()
-        {
-            return Description;
-        }
-
-        public int GetArgsCount()
-        {
-            return ArgsCount;
-        }
-
-        public int GetLevelFrom()
-        {
-            return LevelFrom;
         }
     }
 }

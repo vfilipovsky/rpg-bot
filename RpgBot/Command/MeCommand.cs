@@ -6,10 +6,10 @@ namespace RpgBot.Command
 {
     public class MeCommand : AbstractCommand, ICommand
     {
-        private const int ArgsCount = 0;
-        private const int LevelFrom = 1;
-        private const string Name = "/me";
-        private const string Description = "Show details about you";
+        public string Name { get; set; } = "/me";
+        public string Description { get; set; } = "Show details about you";
+        public int ArgsCount { get; set; } = 0;
+        public int LevelFrom { get; set; } = 1;
 
         private readonly IUserService _userService;
 
@@ -21,26 +21,6 @@ namespace RpgBot.Command
         public string Run(string text, User user)
         {
             return _userService.Stringify(user);
-        }
-
-        public string GetName()
-        {
-            return Name;
-        }
-
-        public string GetDescription()
-        {
-            return Description;
-        }
-
-        public int GetArgsCount()
-        {
-            return ArgsCount;
-        }
-
-        public int GetLevelFrom()
-        {
-            return LevelFrom;
         }
     }
 }

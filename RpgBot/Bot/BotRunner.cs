@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
@@ -10,23 +11,50 @@ namespace RpgBot.Bot
     public abstract class BotRunner<T, TK>
     {
         private readonly IUserService _userService;
+        private readonly ICommandAliasService _commandAliasService;
         private readonly ILogger _logger;
         private readonly ICommands _commands;
 
-        protected BotRunner(IUserService userService, ILogger logger, ICommands commands)
+        protected BotRunner(
+            IUserService userService,
+            ILogger logger,
+            ICommands commands,
+            ICommandAliasService commandAliasService)
         {
             _userService = userService;
             _logger = logger;
             _commands = commands;
+            _commandAliasService = commandAliasService;
         }
-        
+
         public abstract void Listen();
         protected abstract Task<T> SendMessageAsync(TK chat, string message, string messageId = null);
         protected abstract User Advance(User user, TK chat);
-        
+
+        private ICommand GetCommand(string commandName)
+        {
+            var command = _commands.List().FirstOrDefault(c => c.Name == commandName);
+
+            if (command != null)
+                return command;
+
+            var aliasCommand = _commandAliasService.Get(commandName.Replace("/", string.Empty));
+
+            if (null == aliasCommand)
+                throw new NotFoundException($"Command not found by name '{commandName}'");
+
+            command = _commands.List().FirstOrDefault(c => c.Name == $"/{aliasCommand.Name}");
+
+            if (null == command)
+                throw new NotFoundException($"Command not found by name or alias: '{commandName}'");
+
+
+            return command;
+        }
+
         protected void HandleMessage(
             string message,
-            TK chat, 
+            TK chat,
             string userId,
             string username,
             string groupId,
@@ -41,35 +69,28 @@ namespace RpgBot.Bot
             {
                 return;
             }
-            
-            var user = _userService.Get(username, userId);
-            
-            if (user.UserId != groupId) Advance(user, chat);
 
             try
             {
+                var user = _userService.Get(username, userId);
+
+                if (user.UserId != groupId) Advance(user, chat);
+
                 if (!message.StartsWith('/'))
                 {
                     return;
                 }
 
                 var commandName = message.Split(' ')[0];
-                
-                foreach (var command in _commands.List())
+                var command = GetCommand(commandName);
+
+                if (command.LevelFrom > user.Level)
                 {
-                    if (commandName != command.GetName()) continue;
-                    
-                    if (command.GetLevelFrom() > user.Level)
-                    {
-                        SendMessageAsync(chat, $"Command available from level {command.GetLevelFrom()}");
-                        return;
-                    }
-                    
-                    SendMessageAsync(chat, command.Run(message, user), messageId);
+                    SendMessageAsync(chat, $"Command available from level {command.LevelFrom}");
                     return;
                 }
 
-                SendMessageAsync(chat, $"Command '{message}' not found.", messageId);
+                SendMessageAsync(chat, command.Run(message, user), messageId);
             }
             catch (BotException e)
             {

@@ -7,10 +7,10 @@ namespace RpgBot.Command
 {
     public class TopCommand : AbstractCommand, ICommand
     {
-        private const int ArgsCount = 0;
-        private const int LevelFrom = 1;
-        private const string Name = "/top";
-        private const string Description = "Top players list";
+        public string Name { get; set; } = "/top";
+        public string Description { get; set; } = "Top players list";
+        public int ArgsCount { get; set; } = 0;
+        public int LevelFrom { get; set; } = 1;
 
         private readonly IUserService _userService;
         private readonly ILevelSystem _levelSystem;
@@ -20,14 +20,14 @@ namespace RpgBot.Command
             _userService = userService;
             _levelSystem = levelSystem;
         }
-        
+
         public string Run(string text, User user)
         {
             var users = _userService.GetTopPlayers();
 
             var result = "";
             var counter = 1;
-            
+
             foreach (var u in users)
             {
                 result +=
@@ -40,26 +40,6 @@ namespace RpgBot.Command
             }
 
             return result;
-        }
-
-        public string GetName()
-        {
-            return Name;
-        }
-
-        public string GetDescription()
-        {
-            return Description;
-        }
-
-        public int GetArgsCount()
-        {
-            return ArgsCount;
-        }
-
-        public int GetLevelFrom()
-        {
-            return LevelFrom;
         }
     }
 }

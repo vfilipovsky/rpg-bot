@@ -8,10 +8,10 @@ namespace RpgBot.Command
 {
     public class PraiseCommand : AbstractCommand, ICommand
     {
-        private const int ArgsCount = 1;
-        private const int LevelFrom = 2;
-        private const string Name = "/praise";
-        private const string Description = "Praise user and give him +1 to reputation.";
+        public string Name { get; set; } = "/praise";
+        public string Description { get; set; } = "Praise user and give him +1 to reputation.";
+        public int ArgsCount { get; set; } = 1;
+        public int LevelFrom { get; set; } = 2;
         
         private readonly IUserService _userService;
         private readonly IRate _rate;
@@ -38,26 +38,6 @@ namespace RpgBot.Command
             return null == userToPraise 
                 ? $"User '{username}' not found" 
                 : $"{userToPraise.Username} got praised. {userToPraise.Reputation} reputation in total.";
-        }
-
-        public string GetName()
-        {
-            return Name;
-        }
-
-        public string GetDescription()
-        {
-            return Description;
-        }
-
-        public int GetArgsCount()
-        {
-            return ArgsCount;
-        }
-
-        public int GetLevelFrom()
-        {
-            return LevelFrom;
         }
     }
 }

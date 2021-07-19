@@ -24,7 +24,9 @@ namespace RpgBot.Bot.Telegram
             ILogger<TelegramBot> logger,
             IConfiguration configuration,
             ICommands commands,
-            TelegramCommands telegramCommands) : base(userService, logger, commands)
+            ICommandAliasService commandAliasService,
+            TelegramCommands telegramCommands)
+            : base(userService, logger, commands, commandAliasService)
         {
             _logger = logger;
             _telegramCommands = telegramCommands;
@@ -49,11 +51,11 @@ namespace RpgBot.Bot.Telegram
         {
             if (null == messageId)
                 return _bot.SendTextMessageAsync(chat, message, disableNotification: true);
-            
+
             return _bot.SendTextMessageAsync(
-                chat, 
-                message, 
-                replyToMessageId: int.Parse(messageId), 
+                chat,
+                message,
+                replyToMessageId: int.Parse(messageId),
                 disableNotification: true
             );
         }
@@ -87,7 +89,7 @@ namespace RpgBot.Bot.Telegram
             if (message.Sticker != null) return "sticker";
 
             if (message.Photo != null && message.Text == null) return "image";
-            
+
             var text = message.Text;
 
             if (text == null) return null;
@@ -101,7 +103,7 @@ namespace RpgBot.Bot.Telegram
             if (parts[1].StartsWith('@')) return text;
 
             if (message.Entities == null) return text;
-            
+
             foreach (var entity in message.Entities)
             {
                 var u = entity.User;

@@ -19,7 +19,7 @@ namespace RpgBot.Bot.Telegram
             return _commands
                 .List()
                 .Select(
-                    command => new BotCommand {Command = command.GetName(), Description = command.GetDescription()})
+                    command => new BotCommand {Command = command.Name, Description = command.Description})
                 .ToList();
         }
     }
