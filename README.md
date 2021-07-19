@@ -5,6 +5,9 @@ This Project is made to practice .NET, NUnit with Moq and using it for fun with 
 ### Todo list:
 - [x] Telegram adapter
 - [ ] Discord adapter
+- [ ] Preload users in memory to decrease context calls
+- [ ] Command name alias
+- [ ] Nicknames (alias for username)  
 - [ ] Phase/combat system (duels, raids etc.)
 - [ ] Shop 
 - [ ] Inventory
