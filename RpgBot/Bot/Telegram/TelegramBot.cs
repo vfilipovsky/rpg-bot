@@ -26,7 +26,7 @@ namespace RpgBot.Bot.Telegram
             ICommands commands,
             ICommandAliasService commandAliasService,
             TelegramCommands telegramCommands)
-            : base(userService, logger, commands, commandAliasService)
+            : base(userService, logger, commands, commandAliasService, configuration)
         {
             _logger = logger;
             _telegramCommands = telegramCommands;
