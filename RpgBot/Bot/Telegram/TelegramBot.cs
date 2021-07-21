@@ -116,7 +116,7 @@ namespace RpgBot.Bot.Telegram
                 text = parts[0] + ' ' + user.Username;
             }
 
-            return string.Join(' ', parts);
+            return text;
         }
     }
 }
