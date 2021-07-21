@@ -29,6 +29,11 @@ namespace RpgBot.Command
 
             ValidateAlias(commandAlias);
 
+            var exists = Commands.ListNames().FirstOrDefault(c => c == commandAlias);
+
+            if (exists != null)
+                throw new AliasValidationException("You cant name alias by existing command");
+            
             var existsCommand = Commands.ListNames().FirstOrDefault(c => c == commandName);
 
             if (existsCommand == null)
@@ -39,7 +44,7 @@ namespace RpgBot.Command
             return "Alias successfully created";
         }
 
-        private void ValidateAlias(string alias)
+        private static void ValidateAlias(string alias)
         {
             var rules = new List<string>()
             {
