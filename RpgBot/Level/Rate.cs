@@ -19,7 +19,9 @@ namespace RpgBot.Level
         
         // Message
         public int ExpPerMessage { get; set; } =  1;
-        
+        public int ExpPerSticker { get; set; } = 2;
+        public int ExpPerMedia { get; set; } = 2;
+
         // Praise
         public int ReputationPerPraise { get; set; } =  1;
         public int PraiseManaCost { get; set; } =  25;

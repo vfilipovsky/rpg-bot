@@ -3,7 +3,7 @@ using RpgBot.Entity;
 
 namespace RpgBot.Context
 {
-    public class BotContext : DbContext
+    public class BotContext : DbContext, IContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<CommandAlias> CommandAliases { get; set; }

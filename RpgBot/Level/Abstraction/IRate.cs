@@ -12,6 +12,8 @@
         public int StaminaRegen { get; set; }
         public int HealthRegen { get; set; }
         public int ExpPerMessage { get; set; }
+        public int ExpPerSticker { get; set; }
+        public int ExpPerMedia { get; set; }
         public int ReputationPerPraise { get; set; }
         public int PraiseManaCost { get; set; }
         public int ReputationPerPunish { get; set; }

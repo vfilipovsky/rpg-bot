@@ -3,6 +3,7 @@ using NUnit.Framework;
 using RpgBot.Entity;
 using RpgBot.Level;
 using RpgBot.Level.Abstraction;
+using RpgBot.Type;
 
 namespace RpgBotUnitTests.Level
 {
@@ -55,7 +56,7 @@ namespace RpgBotUnitTests.Level
         public void AddExpShouldIncrementUsersExpByGivenRate()
         {
             // act
-            _levelSystem.AddExp(_user, 1);
+            _levelSystem.AddExp(_user, MessageType.Text);
 
             // assert
             Assert.That(_user.Experience, Is.EqualTo(2));

@@ -4,6 +4,7 @@ using RpgBot.Context;
 using RpgBot.Entity;
 using RpgBot.Level.Abstraction;
 using RpgBot.Service.Abstraction;
+using RpgBot.Type;
 
 namespace RpgBot.Service
 {
@@ -73,9 +74,9 @@ namespace RpgBot.Service
             return user;
         }
 
-        public User AddExpForMessage(User user)
+        public User AddExpForMessage(User user, MessageType type)
         {
-            _levelSystem.AddExp(user, _rate.ExpPerMessage);
+            _levelSystem.AddExp(user, type);
             user.MessagesCount += 1;
 
             if (user.MessagesCount % _rate.RegeneratePerMessages == 0) 

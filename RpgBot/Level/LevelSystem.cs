@@ -1,6 +1,7 @@
 ﻿using System;
 using RpgBot.Entity;
 using RpgBot.Level.Abstraction;
+using RpgBot.Type;
 
 namespace RpgBot.Level
 {
@@ -13,8 +14,16 @@ namespace RpgBot.Level
             _rate = rate;
         }
         
-        public User AddExp(User user, int exp)
+        public User AddExp(User user, MessageType type)
         {
+            var exp = type switch
+            {
+                MessageType.Image => _rate.ExpPerMedia,
+                MessageType.Sticker => _rate.ExpPerSticker,
+                MessageType.Text => _rate.ExpPerMessage,
+                _ => _rate.ExpPerMessage
+            };
+
             user.Experience += exp;
 
             return user.Experience < GetExpToNextLevel(user.Level) ? user : LevelUp(user);
