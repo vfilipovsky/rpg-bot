@@ -6,5 +6,9 @@
             : base(message)
         {
         }
+
+        public BotException()
+        {
+        }
     }
 }
