@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using RpgBot.Command.Abstraction;
 using RpgBot.DTO;
 using RpgBot.Entity;
 using RpgBot.Type;

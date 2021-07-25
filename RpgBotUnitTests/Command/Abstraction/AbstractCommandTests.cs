@@ -33,8 +33,9 @@ namespace RpgBotUnitTests.Command.Abstraction
             // assert
             Assert.Multiple(() =>
             {
-                Assert.That(args.Count() - 1, Is.EqualTo(_command.ArgsCount)); // ArgsCount excludes commandName
-                Assert.That(args.ElementAt(1), Is.EqualTo("@Username"));
+                var enumerable = args.ToList();
+                Assert.That(enumerable.Count - 1, Is.EqualTo(_command.ArgsCount)); // ArgsCount excludes commandName
+                Assert.That(enumerable.ElementAt(1), Is.EqualTo("@Username"));
             });
         }
 

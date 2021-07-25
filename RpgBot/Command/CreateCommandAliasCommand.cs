@@ -24,8 +24,9 @@ namespace RpgBot.Command
         public string Run(string message, User user)
         {
             var args = GetArgs(message, ArgsCount);
-            var commandName = args.ElementAt(2);
-            var commandAlias = args.ElementAt(1);
+            var enumerable = args.ToList();
+            var commandName = enumerable.ElementAt(2);
+            var commandAlias = enumerable.ElementAt(1);
 
             ValidateAlias(commandAlias);
 
