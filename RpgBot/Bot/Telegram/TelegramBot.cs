@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -23,14 +22,12 @@ namespace RpgBot.Bot.Telegram
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ICommands _commands;
-        private readonly ICommandAliasService _commandAliasService;
 
         public TelegramBot(
             IUserService userService,
             ILogger<TelegramBot> logger,
             IConfiguration configuration,
             ICommands commands,
-            ICommandAliasService commandAliasService,
             TelegramCommands telegramCommands)
         {
             _logger = logger;
@@ -38,7 +35,6 @@ namespace RpgBot.Bot.Telegram
             _configuration = configuration;
             _userService = userService;
             _commands = commands;
-            _commandAliasService = commandAliasService;
         }
 
         public void Listen()
@@ -81,7 +77,7 @@ namespace RpgBot.Bot.Telegram
         private void HandleMessage(object sender, MessageEventArgs args)
         {
             var dto = ParseMessage(args.Message);
-            
+
             if (string.IsNullOrEmpty(dto.Text))
             {
                 return;
@@ -99,7 +95,7 @@ namespace RpgBot.Bot.Telegram
                 }
 
                 var commandName = dto.Text.Split(' ')[0];
-                var command = GetCommand(commandName);
+                var command = _commands.GetCommand(commandName);
 
                 if (command.RequiredLevel > user.Level)
                 {
@@ -119,28 +115,7 @@ namespace RpgBot.Bot.Telegram
                 SendMessageAsync(dto.Chat, "Unexpected error");
             }
         }
-        
-        public ICommand GetCommand(string commandName)
-        {
-            var command = _commands.List().FirstOrDefault(c => c.Name == commandName);
 
-            if (command != null)
-                return command;
-
-            var aliasCommand = _commandAliasService.Get(commandName.Replace("/", string.Empty));
-
-            if (null == aliasCommand)
-                throw new NotFoundException($"Command not found by name '{commandName}'");
-
-            command = _commands.List().FirstOrDefault(c => c.Name == $"/{aliasCommand.Name}");
-
-            if (null == command)
-                throw new NotFoundException($"Command not found by name or alias: '{commandName}'");
-
-
-            return command;
-        }
-        
         public MessageDto<ChatId> ParseMessage(Message message)
         {
             var dto = new MessageDto<ChatId>()
@@ -192,7 +167,7 @@ namespace RpgBot.Bot.Telegram
             {
                 dto.Text = string.Join(' ', parts);
                 return dto;
-            };
+            }
 
             foreach (var entity in message.Entities)
             {
@@ -207,6 +182,5 @@ namespace RpgBot.Bot.Telegram
             dto.Text = string.Join(' ', parts);
             return dto;
         }
-        
     }
 }

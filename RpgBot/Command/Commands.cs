@@ -1,6 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using RpgBot.Command.Abstraction;
+using RpgBot.Exception;
+using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
 {
@@ -15,6 +17,8 @@ namespace RpgBot.Command
         private readonly DeleteCommandAliasCommand _deleteCommandAliasCommand;
         private readonly ListAliasesCommand _listAliasesCommand;
 
+        private readonly ICommandAliasService _commandAliasService;
+
         public Commands(
             PraiseCommand praise,
             PunishCommand punish,
@@ -23,7 +27,8 @@ namespace RpgBot.Command
             AboutCommand about,
             CreateCommandAliasCommand createCommandAlias,
             DeleteCommandAliasCommand deleteCommandAlias, 
-            ListAliasesCommand listAliasesCommand)
+            ListAliasesCommand listAliasesCommand,
+            ICommandAliasService commandAliasService)
         {
             _praiseCommand = praise;
             _punishCommand = punish;
@@ -33,21 +38,7 @@ namespace RpgBot.Command
             _createCommandAliasCommand = createCommandAlias;
             _deleteCommandAliasCommand = deleteCommandAlias;
             _listAliasesCommand = listAliasesCommand;
-        }
-
-        public IEnumerable<ICommand> List()
-        {
-            return new List<ICommand>
-            {
-                _praiseCommand, 
-                _meCommand, 
-                _punishCommand, 
-                _topCommand,
-                _aboutCommand,
-                _createCommandAliasCommand,
-                _deleteCommandAliasCommand,
-                _listAliasesCommand,
-            };
+            _commandAliasService = commandAliasService;
         }
 
         public static IEnumerable<string> ListNames()
@@ -65,5 +56,41 @@ namespace RpgBot.Command
             };
         }
         
+        public ICommand GetCommand(string commandName)
+        {
+            var command = List().FirstOrDefault(c => c.Name == commandName);
+
+            if (command != null)
+                return command;
+
+            var aliasCommand = _commandAliasService.Get(commandName.Replace("/", string.Empty));
+
+            if (null == aliasCommand)
+                throw new NotFoundException($"Command not found by name '{commandName}'");
+
+            command = List().FirstOrDefault(c => c.Name == $"/{aliasCommand.Name}");
+
+            if (null == command)
+                throw new NotFoundException($"Command not found by name or alias: '{commandName}'");
+
+
+            return command;
+        }
+        
+        public IEnumerable<ICommand> List()
+        {
+            return new List<ICommand>
+            {
+                _praiseCommand, 
+                _meCommand, 
+                _punishCommand, 
+                _topCommand,
+                _aboutCommand,
+                _createCommandAliasCommand,
+                _deleteCommandAliasCommand,
+                _listAliasesCommand,
+            };
+        }
+
     }
 }

@@ -12,6 +12,5 @@ namespace RpgBot.Bot
         public Task<T> SendMessageAsync(TK chatId, string message, string messageId = null);
         public User Advance(User user, TK chat, MessageType type);
         public MessageDto<TK> ParseMessage(T message);
-        public ICommand GetCommand(string commandName);
     }
 }

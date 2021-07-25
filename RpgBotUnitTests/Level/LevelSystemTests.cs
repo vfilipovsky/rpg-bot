@@ -13,7 +13,6 @@ namespace RpgBotUnitTests.Level
         private User _user;
         private Mock<IRate> _mockRate;
         private ILevelSystem _levelSystem;
-        private int _getExpFormulaResult;
 
         [SetUp]
         public void SetUp()
@@ -22,7 +21,6 @@ namespace RpgBotUnitTests.Level
             _mockRate.Setup(r => r.Scale).Returns(1.1f);
             _mockRate.Setup(r => r.XpBase).Returns(100.0f);
             _mockRate.Setup(r => r.ExpPerMessage).Returns(1);
-            _getExpFormulaResult = 158;
 
             _levelSystem = new LevelSystem(_mockRate.Object);
             _user = new User() {Level = 1, Experience = 1};
@@ -45,11 +43,14 @@ namespace RpgBotUnitTests.Level
         [Test]
         public void GetExpToNextLevelShouldReturnACalculatedValueFromFormula()
         {
+            // arrange
+            const int getExpFormulaResult = 158;
+
             // act
             var exp = _levelSystem.GetExpToNextLevel(_user.Level);
 
             // assert
-            Assert.That(exp, Is.EqualTo(_getExpFormulaResult));
+            Assert.That(exp, Is.EqualTo(getExpFormulaResult));
         }
 
         [Test]
