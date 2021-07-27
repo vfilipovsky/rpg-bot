@@ -2,21 +2,21 @@
 {
     public interface IRate
     {
-        public float Scale { get; set; }
-        public float XpBase { get; set; }
-        public int StaminaPerLevel { get; set; }
-        public int ManaPerLevel { get; set; }
-        public int HealthPerLevel { get; set; }
-        public int RegeneratePerMessages { get; set; }
-        public int ManaRegen { get; set; }
-        public int StaminaRegen { get; set; }
-        public int HealthRegen { get; set; }
-        public int ExpPerMessage { get; set; }
-        public int ExpPerSticker { get; set; }
-        public int ExpPerMedia { get; set; }
-        public int ReputationPerPraise { get; set; }
-        public int PraiseManaCost { get; set; }
-        public int ReputationPerPunish { get; set; }
-        public int PunishStaminaCost { get; set; }
+        public float Scale { get; }
+        public float XpBase { get; }
+        public int StaminaPerLevel { get; }
+        public int ManaPerLevel { get; }
+        public int HealthPerLevel { get; }
+        public int RegeneratePerMessages { get; }
+        public int ManaRegen { get; }
+        public int StaminaRegen { get; }
+        public int HealthRegen { get; }
+        public int ExpPerMessage { get; }
+        public int ExpPerSticker { get; }
+        public int ExpPerMedia { get; }
+        public int ReputationPerPraise { get; }
+        public int PraiseManaCost { get; }
+        public int ReputationPerPunish { get; }
+        public int PunishStaminaCost { get; }
     }
 }
