@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RpgBot.Bot;
 using RpgBot.Bot.Telegram;
 using RpgBot.Command;
 using RpgBot.Command.Abstraction;
@@ -12,6 +13,7 @@ using RpgBot.Level;
 using RpgBot.Level.Abstraction;
 using RpgBot.Service;
 using RpgBot.Service.Abstraction;
+using Telegram.Bot.Types;
 
 namespace RpgBot
 {
@@ -28,7 +30,7 @@ namespace RpgBot
             var serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton(configuration);
-            serviceCollection.AddSingleton<TelegramBot>();
+            serviceCollection.AddSingleton<IBot<Message, ChatId>, TelegramBot>();
             serviceCollection.AddSingleton<IUserService, UserService>();
             serviceCollection.AddSingleton<IRate, Rate>();
             serviceCollection.AddSingleton<ILevelSystem, LevelSystem>();

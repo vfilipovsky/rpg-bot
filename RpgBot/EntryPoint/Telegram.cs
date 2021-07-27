@@ -1,12 +1,13 @@
-﻿using RpgBot.Bot.Telegram;
+﻿using RpgBot.Bot;
+using Telegram.Bot.Types;
 
 namespace RpgBot.EntryPoint
 {
     public class Telegram : IEntryPoint
     {
-        private readonly TelegramBot _telegramBot;
+        private readonly IBot<Message, ChatId> _telegramBot;
 
-        public Telegram(TelegramBot telegramBot)
+        public Telegram(IBot<Message, ChatId> telegramBot)
         {
             _telegramBot = telegramBot;
         }
