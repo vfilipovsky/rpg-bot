@@ -1,24 +1,19 @@
 ﻿using System.Linq;
-using Moq;
 using NUnit.Framework;
 using RpgBot.Command;
-using RpgBot.Command.Abstraction;
 using RpgBot.Exception;
-using RpgBot.Service.Abstraction;
 
-namespace RpgBotUnitTests.Command.Abstraction
+namespace RpgBotUnitTests.Command
 {
     [TestFixture]
-    public class AbstractCommandTests
+    public class CommandArgsResolverTests
     {
-        private Mock<IUserService> _mockUserService;
-        private AboutCommand _command;
+        private CommandArgsResolver _commandArgsResolver;
 
         [SetUp]
         public void SetUp()
         {
-            _mockUserService = new Mock<IUserService>();
-            _command = new AboutCommand(_mockUserService.Object);
+            _commandArgsResolver = new CommandArgsResolver();
         }
 
         [Test]
@@ -26,13 +21,14 @@ namespace RpgBotUnitTests.Command.Abstraction
         {
             // arrange
             const string message = "/about @Username";
+            const int argsCount = 1;
 
             // act
-            var args = _command.GetArgs(message, _command.ArgsCount);
+            var args = _commandArgsResolver.GetArgs(message, argsCount);
 
             // assert
             var enumerable = args.ToList();
-            Assert.That(enumerable.Count - 1, Is.EqualTo(_command.ArgsCount)); // ArgsCount excludes commandName
+            Assert.That(enumerable.Count - 1, Is.EqualTo(argsCount)); // ArgsCount excludes commandName
             Assert.That(enumerable.ElementAt(1), Is.EqualTo("@Username"));
         }
 
@@ -40,15 +36,12 @@ namespace RpgBotUnitTests.Command.Abstraction
         public void GetArgsWillThrowExceptionIfPartsLengthLessThatArgsCount()
         {
             // arrange
-            const string message = "/about";
-            var mockAbstractCommand = new Mock<AbstractCommand>() {CallBase = true};
-            mockAbstractCommand
-                .Setup(a => a.GetArgs(message, 1))
-                .Throws(new BotException("Pass the argument to command"));
+            const string message = "/about @Username";
+            const int argsCount = 2;
 
             // assert
             Assert.Throws<BotException>(
-                () => _command.GetArgs(message, 1),
+                () => _commandArgsResolver.GetArgs(message, argsCount),
                 "Pass the argument to command");
         }
 
@@ -69,7 +62,7 @@ namespace RpgBotUnitTests.Command.Abstraction
             };
 
             // act
-            var actualParts = _command.ClearArgs(parts, 2);
+            var actualParts = _commandArgsResolver.ClearArgs(parts, 2);
 
             // assert
             Assert.AreEqual(expectedParts, actualParts);
