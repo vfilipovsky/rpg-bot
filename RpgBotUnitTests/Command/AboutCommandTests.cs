@@ -1,6 +1,8 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using RpgBot.Command;
+using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
 using RpgBot.Service.Abstraction;
 
@@ -10,6 +12,7 @@ namespace RpgBotUnitTests.Command
     public class AboutCommandTests
     {
         private Mock<IUserService> _mockUserService;
+        private Mock<ICommandArgsResolver> _mockCommandArgsResolver;
         private User _user;
         private AboutCommand _command;
         private string _message;
@@ -17,6 +20,11 @@ namespace RpgBotUnitTests.Command
         [SetUp]
         public void SetUp()
         {
+            _mockCommandArgsResolver = new Mock<ICommandArgsResolver>();
+            _mockCommandArgsResolver
+                .Setup(c => c.GetArgs("/about @username", 1))
+                .Returns(new List<string>() {"/about", "username"});
+
             _user = new User() {Username = "username", UserId = "123"};
             _message = "/about @username";
         }
@@ -43,7 +51,7 @@ namespace RpgBotUnitTests.Command
                 .Setup(u => u.GetByUsername("username"))
                 .Returns(_user);
             
-            _command = new AboutCommand(_mockUserService.Object);
+            _command = new AboutCommand(_mockUserService.Object, _mockCommandArgsResolver.Object);
 
             var expected =
                 $"Id: {_user.UserId}\n" +
@@ -72,7 +80,7 @@ namespace RpgBotUnitTests.Command
                 .Setup(u => u.GetByUsername("username"))
                 .Returns((User) null);
 
-            _command = new AboutCommand(_mockUserService.Object);
+            _command = new AboutCommand(_mockUserService.Object, _mockCommandArgsResolver.Object);
 
             const string expected = "User 'username' not found.";
 
@@ -86,7 +94,7 @@ namespace RpgBotUnitTests.Command
         [Test]
         public void PublicFieldsAreCorrect()
         {
-            var command = new AboutCommand(new Mock<IUserService>().Object);
+            var command = new AboutCommand(new Mock<IUserService>().Object, _mockCommandArgsResolver.Object);
             
             Assert.Multiple(() =>
             {

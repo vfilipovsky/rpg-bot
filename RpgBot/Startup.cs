@@ -35,6 +35,7 @@ namespace RpgBot
             serviceCollection.AddSingleton<IRate, Rate>();
             serviceCollection.AddSingleton<ILevelSystem, LevelSystem>();
             serviceCollection.AddSingleton<ICommandAliasService, CommandAliasService>();
+            serviceCollection.AddSingleton<ICommandArgsResolver, CommandArgsResolver>();
             
             // commands
             serviceCollection.AddSingleton<CreateCommandAliasCommand>();

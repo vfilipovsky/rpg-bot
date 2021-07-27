@@ -4,12 +4,12 @@ using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
 {
-    public class MeCommand : AbstractCommand, ICommand
+    public class MeCommand : ICommand
     {
-        public string Name { get; set; } = "/me";
-        public string Description { get; set; } = "Show details about you";
-        public int ArgsCount { get; set; } = 0;
-        public int RequiredLevel { get; set; } = 1;
+        public string Name => "/me";
+        public string Description => "Show details about you";
+        public int ArgsCount => 0;
+        public int RequiredLevel => 1;
 
         private readonly IUserService _userService;
 

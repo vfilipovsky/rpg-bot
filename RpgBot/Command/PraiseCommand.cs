@@ -6,25 +6,27 @@ using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
 {
-    public class PraiseCommand : AbstractCommand, ICommand
+    public class PraiseCommand : ICommand
     {
-        public string Name { get; set; } = "/praise";
-        public string Description { get; set; } = "Praise user and give him +1 to reputation.";
-        public int ArgsCount { get; set; } = 1;
-        public int RequiredLevel { get; set; } = 2;
-        
+        public string Name => "/praise";
+        public string Description => "Praise user and give him +1 to reputation.";
+        public int ArgsCount => 1;
+        public int RequiredLevel => 2;
+
         private readonly IUserService _userService;
         private readonly IRate _rate;
+        private readonly ICommandArgsResolver _commandArgsResolver;
         
-        public PraiseCommand(IUserService userService, IRate rate)
+        public PraiseCommand(IUserService userService, IRate rate, ICommandArgsResolver commandArgsResolver)
         {
             _userService = userService;
             _rate = rate;
+            _commandArgsResolver = commandArgsResolver;
         }
         
         public string Run(string text, User user)
         {
-            var username = GetArgs(text, ArgsCount)
+            var username = _commandArgsResolver.GetArgs(text, ArgsCount)
                 .ElementAt(1)
                 .Replace('@'.ToString(), string.Empty);
 

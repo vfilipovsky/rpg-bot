@@ -5,12 +5,12 @@ using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
 {
-    public class TopCommand : AbstractCommand, ICommand
+    public class TopCommand : ICommand
     {
-        public string Name { get; set; } = "/top";
-        public string Description { get; set; } = "Top players list";
-        public int ArgsCount { get; set; } = 0;
-        public int RequiredLevel { get; set; } = 1;
+        public string Name => "/top";
+        public string Description => "Top players list";
+        public int ArgsCount => 0;
+        public int RequiredLevel => 1;
 
         private readonly IUserService _userService;
         private readonly ILevelSystem _levelSystem;

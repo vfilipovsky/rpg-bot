@@ -5,12 +5,12 @@ using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
 {
-    public class ListAliasesCommand : AbstractCommand, ICommand
+    public class ListAliasesCommand : ICommand
     {
-        public string Name { get; set; } = "/aliases";
-        public string Description { get; set; } = "Lists all aliases";
-        public int ArgsCount { get; set; } = 0;
-        public int RequiredLevel { get; set; } = 1;
+        public string Name => "/aliases";
+        public string Description => "Lists all aliases";
+        public int ArgsCount => 0;
+        public int RequiredLevel => 1;
 
         private readonly ICommandAliasService _commandAliasService;
 

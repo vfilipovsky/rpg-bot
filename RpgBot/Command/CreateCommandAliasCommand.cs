@@ -7,23 +7,27 @@ using RpgBot.Service.Abstraction;
 
 namespace RpgBot.Command
 {
-    public class CreateCommandAliasCommand : AbstractCommand, ICommand
+    public class CreateCommandAliasCommand : ICommand
     {
-        public string Name { get; set; } = "/alias";
-        public string Description { get; set; } = "Creates alias for a command ($alias, $name)";
-        public int ArgsCount { get; set; } = 2;
-        public int RequiredLevel { get; set; } = 1;
+        public string Name => "/alias";
+        public string Description => "Creates alias for a command ($alias, $name)";
+        public int ArgsCount => 2;
+        public int RequiredLevel => 1;
 
         private readonly ICommandAliasService _commandAliasService;
+        private readonly ICommandArgsResolver _commandArgsResolver;
 
-        public CreateCommandAliasCommand(ICommandAliasService commandAliasService)
+        public CreateCommandAliasCommand(
+            ICommandAliasService commandAliasService,
+            ICommandArgsResolver commandArgsResolver)
         {
             _commandAliasService = commandAliasService;
+            _commandArgsResolver = commandArgsResolver;
         }
 
         public string Run(string message, User user)
         {
-            var args = GetArgs(message, ArgsCount);
+            var args = _commandArgsResolver.GetArgs(message, ArgsCount);
             var enumerable = args.ToList();
             var commandName = enumerable.ElementAt(2);
             var commandAlias = enumerable.ElementAt(1);
@@ -34,7 +38,7 @@ namespace RpgBot.Command
 
             if (exists != null)
                 throw new AliasValidationException("You cant name alias by existing command");
-            
+
             var existsCommand = Commands.ListNames().FirstOrDefault(c => c == commandName);
 
             if (existsCommand == null)
