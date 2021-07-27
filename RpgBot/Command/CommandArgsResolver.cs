@@ -20,7 +20,7 @@ namespace RpgBot.Command
             return ClearArgs(parts, argsCount).ToList();
         }
 
-        public string[] ClearArgs(string[] parts, int argsCount)
+        public IEnumerable<string> ClearArgs(string[] parts, int argsCount)
         {
             for (var i = 0; i < argsCount; i++)
             {
