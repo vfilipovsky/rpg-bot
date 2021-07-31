@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.8" />
       <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
       <PackageReference Include="Moq" Version="4.16.1" />
       <PackageReference Include="NUnit" Version="3.13.2" />
@@ -13,6 +14,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\RpgBot\RpgBot.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Context" />
     </ItemGroup>
 
 </Project>
