@@ -49,17 +49,22 @@ namespace RpgBot.Command
             return "Alias successfully created";
         }
 
-        private static void ValidateAlias(string alias)
+        public static void ValidateAlias(string alias)
         {
             var rules = new List<string>()
             {
                 "@"
             };
 
-            if (rules.Contains(alias))
-                throw new AliasValidationException(
-                    $"Alias must not contain '{string.Join(", ", rules)}'"
-                );
+            rules.ForEach(r =>
+            {
+                if (alias.Contains(r))
+                {
+                    throw new AliasValidationException(
+                        $"Alias must not contain '{string.Join(", ", rules)}'"
+                    );
+                }
+            });
         }
     }
 }

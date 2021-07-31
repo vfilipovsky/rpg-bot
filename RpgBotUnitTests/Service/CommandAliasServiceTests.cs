@@ -104,6 +104,7 @@ namespace RpgBotUnitTests.Service
             }
 
             var actual = _service.Create("alias5", "praise");
+
             Assert.IsNotNull(actual);
             Assert.IsInstanceOf<CommandAlias>(actual);
             Assert.AreEqual(_context.CommandAliases.First(c => c.Alias == alias), actual);
