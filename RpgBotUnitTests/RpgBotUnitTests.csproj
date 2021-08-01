@@ -16,8 +16,4 @@
       <ProjectReference Include="..\RpgBot\RpgBot.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Context" />
-    </ItemGroup>
-
 </Project>
