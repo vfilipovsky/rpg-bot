@@ -17,23 +17,26 @@ namespace RpgBotUnitTests.Command
             // arrange
             var mockUserService = new Mock<IUserService>();
             var mockLeveSystem = new Mock<ILevelSystem>();
-            const int returnsExp = 200;
 
             mockLeveSystem
                 .Setup(l => l.GetExpToNextLevel(2))
-                .Returns(returnsExp);
-            
+                .Returns(200);
+
+            mockLeveSystem
+                .Setup(l => l.GetExpToNextLevel(1))
+                .Returns(100);
+
             mockUserService
                 .Setup(u => u.GetTopPlayers())
                 .Returns(new List<User>()
                 {
                     new()
                     {
-                        Id = 2, Username = "username2", Experience = 2, Level = 2, Reputation = 2, MessagesCount = 2
+                        Username = "username2", Experience = 2, Level = 2, Reputation = 2, MessagesCount = 2
                     },
                     new()
                     {
-                        Id = 1, Username = "username1", Experience = 1, Level = 2, Reputation = 1, MessagesCount = 1
+                        Username = "username1", Experience = 1, Level = 1, Reputation = 1, MessagesCount = 1
                     }
                 });
 
@@ -42,12 +45,12 @@ namespace RpgBotUnitTests.Command
                 "Exp: 2/200 | " +
                 "Rep: 2 | " +
                 "Msg: 2 |\n\n" +
-                "| №2 | username1 | Lv. 2 | " +
-                "Exp: 1/200 | " +
+                "| №2 | username1 | Lv. 1 | " +
+                "Exp: 1/100 | " +
                 "Rep: 1 | " +
                 "Msg: 1 |\n\n";
-            
-                var command = new TopCommand(mockUserService.Object, mockLeveSystem.Object);
+
+            var command = new TopCommand(mockUserService.Object, mockLeveSystem.Object);
 
             // act
             var actual = command.Run("/top", new User());
