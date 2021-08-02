@@ -78,10 +78,7 @@ namespace RpgBot.Bot.Telegram
         {
             var dto = ParseMessage(args.Message);
 
-            if (string.IsNullOrEmpty(dto.Text))
-            {
-                return;
-            }
+            if (dto == null) return;
 
             try
             {
