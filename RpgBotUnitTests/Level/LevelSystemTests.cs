@@ -22,7 +22,7 @@ namespace RpgBotUnitTests.Level
             _mockRate.Setup(r => r.XpBase).Returns(100.0f);
 
             _levelSystem = new LevelSystem(_mockRate.Object);
-            _user = new User() {Level = 1, Experience = 1};
+            _user = new User() { Level = 1, Experience = 1 };
         }
 
         [Test]
@@ -64,26 +64,26 @@ namespace RpgBotUnitTests.Level
             // assert
             Assert.That(_user.Experience, Is.EqualTo(2));
         }
-        
+
         [Test]
         public void AddExpShouldIncrementUsersExpByMessageTypeSticker()
         {
             // arrange
             _mockRate.Setup(r => r.ExpPerSticker).Returns(3);
-            
+
             // act
             _levelSystem.AddExp(_user, MessageType.Sticker);
 
             // assert
             Assert.That(_user.Experience, Is.EqualTo(4));
         }
-        
+
         [Test]
         public void AddExpShouldIncrementUsersExpByMessageTypeImage()
         {
             // arrange
             _mockRate.Setup(r => r.ExpPerMedia).Returns(2);
-            
+
             // act
             _levelSystem.AddExp(_user, MessageType.Image);
 
@@ -91,5 +91,17 @@ namespace RpgBotUnitTests.Level
             Assert.That(_user.Experience, Is.EqualTo(3));
         }
 
+        [Test]
+        public void AddExpShouldIncreaseByExpPerMessageRateIfGivenIncorrectMessageType()
+        {
+            // arrange
+            _mockRate.Setup(r => r.ExpPerMessage).Returns(1);
+
+            // act
+            _levelSystem.AddExp(_user, (MessageType)200);
+            
+            // assert
+            Assert.That(_user.Experience, Is.EqualTo(2));
+        }
     }
 }
