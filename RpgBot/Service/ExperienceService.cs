@@ -18,10 +18,13 @@ namespace RpgBot.Service
             _userService = userService;
             _rate = rate;
         }
-        
+
         public User Praise(string username, User user)
         {
             var userToPraise = _userService.GetByUsername(username);
+
+            if (user.ManaPoints < _rate.PraiseManaCost)
+                throw new NotEnoughManaException($"Not enough mana, need {_rate.PraiseManaCost} ({user.ManaPoints}).");
 
             if (null == userToPraise)
                 throw new NotFoundException($"User '{username}' not found");
@@ -37,6 +40,10 @@ namespace RpgBot.Service
         public User Punish(string username, User user)
         {
             var userToPunish = _userService.GetByUsername(username);
+
+            if (user.StaminaPoints < _rate.PunishStaminaCost)
+                throw new NotEnoughStaminaException(
+                    $"Not enough stamina, need {_rate.PunishStaminaCost} ({user.StaminaPoints}).");
 
             if (null == userToPunish)
                 throw new NotFoundException($"User '{username}' not found");
@@ -67,7 +74,7 @@ namespace RpgBot.Service
             _levelSystem.AddExp(user, type);
             user.MessagesCount += 1;
 
-            if (user.MessagesCount % _rate.RegeneratePerMessages == 0) 
+            if (user.MessagesCount % _rate.RegeneratePerMessages == 0)
                 user = Regenerate(user);
 
             return _userService.Update(user);
