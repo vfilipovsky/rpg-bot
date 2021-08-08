@@ -4,7 +4,9 @@ using NUnit.Framework;
 using RpgBot.Command;
 using RpgBot.Command.Abstraction;
 using RpgBot.Entity;
+using RpgBot.Exception;
 using RpgBot.Level.Abstraction;
+using RpgBot.Service;
 using RpgBot.Service.Abstraction;
 
 namespace RpgBotUnitTests.Command
@@ -12,17 +14,21 @@ namespace RpgBotUnitTests.Command
     [TestFixture]
     public class PraiseCommandTests
     {
-        private Mock<IUserService> _mockUserService;
+        private Mock<IExperienceService> _mockExperienceService;
         private Mock<IRate> _mockRate;
         private Mock<ICommandArgsResolver> _mockCommandArgsResolver;
+        private Mock<ILevelSystem> _mockLevelSystem;
+        private Mock<IUserService> _mockUserService;
 
         private const int PraiseManaCost = 25;
 
         [SetUp]
         public void SetUp()
         {
-            _mockCommandArgsResolver = new Mock<ICommandArgsResolver>();
+            _mockLevelSystem = new Mock<ILevelSystem>();
             _mockUserService = new Mock<IUserService>();
+            _mockCommandArgsResolver = new Mock<ICommandArgsResolver>();
+            _mockExperienceService = new Mock<IExperienceService>();
             _mockRate = new Mock<IRate>();
 
             _mockCommandArgsResolver
@@ -39,35 +45,39 @@ namespace RpgBotUnitTests.Command
         }
 
         [Test]
-        public void RunPraiseCommandWillFailIfUserNotFound()
+        public void RunPraiseCommandWillThrowNotFoundExceptionIfUserNotFound()
         {
             // arrange
-            var user = new User() {Username = "username2", ManaPoints = 25};
+            var user = new User() { Username = "username2", ManaPoints = 25 };
 
             _mockUserService
-                .Setup(u => u.Praise("username", user))
-                .Returns((User) null);
+                .Setup(u => u.GetByUsername("username"))
+                .Returns((User)null);
+            
+            var command =
+                new PraiseCommand(
+                    new ExperienceService(
+                        _mockLevelSystem.Object,
+                        _mockUserService.Object,
+                        _mockRate.Object),
+                    _mockRate.Object, _mockCommandArgsResolver.Object);
 
-            var command = new PraiseCommand(_mockUserService.Object, _mockRate.Object, _mockCommandArgsResolver.Object);
-
-            // act
-            var actual = command.Run($"/praise @username", user);
-
-            // asserts
-            Assert.AreEqual("User 'username' not found", actual);
+            // assert
+            Assert.Throws<NotFoundException>(() => command.Run("/praise @username", user));
         }
 
         [Test]
         public void RunPraiseCommandWillAddsReputationToUserIfFound()
         {
             // arrange
-            var user = new User() {Username = "username2", ManaPoints = 25};
+            var user = new User() { Username = "username2", ManaPoints = 25 };
 
-            _mockUserService
+            _mockExperienceService
                 .Setup(u => u.Praise("username", user))
-                .Returns(new User() {Username = "username", Reputation = 1});
+                .Returns(new User() { Username = "username", Reputation = 1 });
 
-            var command = new PraiseCommand(_mockUserService.Object, _mockRate.Object, _mockCommandArgsResolver.Object);
+            var command = new PraiseCommand(_mockExperienceService.Object, _mockRate.Object,
+                _mockCommandArgsResolver.Object);
 
             // act
             var actual = command.Run($"/praise @username", user);
@@ -80,8 +90,9 @@ namespace RpgBotUnitTests.Command
         public void RunPraiseCommandCannotSucceedWhenNotEnoughMana()
         {
             // arrange
-            var command = new PraiseCommand(_mockUserService.Object, _mockRate.Object, _mockCommandArgsResolver.Object);
-            var user = new User() {Username = "username2", ManaPoints = 20};
+            var command = new PraiseCommand(_mockExperienceService.Object, _mockRate.Object,
+                _mockCommandArgsResolver.Object);
+            var user = new User() { Username = "username2", ManaPoints = 20 };
 
             // act
             var actual = command.Run($"/praise @username", user);
@@ -94,10 +105,11 @@ namespace RpgBotUnitTests.Command
         public void RunPraiseCommandIsNotAllowedToPraiseYourself()
         {
             // arrange
-            var command = new PraiseCommand(_mockUserService.Object, _mockRate.Object, _mockCommandArgsResolver.Object);
+            var command = new PraiseCommand(_mockExperienceService.Object, _mockRate.Object,
+                _mockCommandArgsResolver.Object);
 
             // act
-            var actual = command.Run($"/praise @username", new User() {Username = "username"});
+            var actual = command.Run($"/praise @username", new User() { Username = "username" });
 
             // asserts
             Assert.AreEqual("You cannot praise yourself", actual);
@@ -107,7 +119,7 @@ namespace RpgBotUnitTests.Command
         public void PublicFieldsAreCorrect()
         {
             var command = new PraiseCommand(
-                new Mock<IUserService>().Object,
+                new Mock<IExperienceService>().Object,
                 new Mock<IRate>().Object,
                 new Mock<ICommandArgsResolver>().Object);
 

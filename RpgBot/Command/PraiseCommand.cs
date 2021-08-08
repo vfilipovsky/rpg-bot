@@ -13,13 +13,13 @@ namespace RpgBot.Command
         public int ArgsCount => 1;
         public int RequiredLevel => 2;
 
-        private readonly IUserService _userService;
+        private readonly IExperienceService _experienceService;
         private readonly IRate _rate;
         private readonly ICommandArgsResolver _commandArgsResolver;
         
-        public PraiseCommand(IUserService userService, IRate rate, ICommandArgsResolver commandArgsResolver)
+        public PraiseCommand(IExperienceService experienceService, IRate rate, ICommandArgsResolver commandArgsResolver)
         {
-            _userService = userService;
+            _experienceService = experienceService;
             _rate = rate;
             _commandArgsResolver = commandArgsResolver;
         }
@@ -35,11 +35,9 @@ namespace RpgBot.Command
             if (user.ManaPoints < _rate.PraiseManaCost)
                 return $"Not enough mana, need {_rate.PraiseManaCost} ({user.ManaPoints}).";
             
-            var userToPraise = _userService.Praise(username, user);
+            var userToPraise = _experienceService.Praise(username, user);
 
-            return null == userToPraise 
-                ? $"User '{username}' not found" 
-                : $"{userToPraise.Username} got praised. {userToPraise.Reputation} reputation in total.";
+            return $"{userToPraise.Username} got praised. {userToPraise.Reputation} reputation in total.";
         }
     }
 }

@@ -4,20 +4,17 @@ using RpgBot.Context;
 using RpgBot.Entity;
 using RpgBot.Level.Abstraction;
 using RpgBot.Service.Abstraction;
-using RpgBot.Type;
 
 namespace RpgBot.Service
 {
     public class UserService : IUserService
     {
         private readonly BotContext _context;
-        private readonly IRate _rate;
         private readonly ILevelSystem _levelSystem;
 
-        public UserService(BotContext botContext, IRate rate, ILevelSystem levelSystem)
+        public UserService(BotContext botContext, ILevelSystem levelSystem)
         {
             _context = botContext;
-            _rate = rate;
             _levelSystem = levelSystem;
         }
 
@@ -64,58 +61,6 @@ namespace RpgBot.Service
             user.Username = username ?? (user.Username = user.UserId);
 
             return Update(user);
-        }
-
-        private User Regenerate(User user)
-        {
-            var hpAfterRegen = user.HealthPoints + _rate.HealthRegen;
-            var manaAfterRegen = user.ManaPoints + _rate.ManaRegen;
-            var staminaAfterRegen = user.StaminaPoints + _rate.StaminaRegen;
-
-            if (hpAfterRegen <= user.MaxHealthPoints) user.HealthPoints = hpAfterRegen;
-            if (manaAfterRegen <= user.MaxManaPoints) user.ManaPoints = manaAfterRegen;
-            if (staminaAfterRegen <= user.MaxStaminaPoints) user.StaminaPoints = staminaAfterRegen;
-
-            return user;
-        }
-
-        public User AddExpForMessage(User user, MessageType type)
-        {
-            _levelSystem.AddExp(user, type);
-            user.MessagesCount += 1;
-
-            if (user.MessagesCount % _rate.RegeneratePerMessages == 0) 
-                user = Regenerate(user);
-
-            return Update(user);
-        }
-
-        public User Praise(string username, User user)
-        {
-            var userToPraise = GetByUsername(username);
-
-            if (null == userToPraise) return null;
-
-            user.ManaPoints -= _rate.PraiseManaCost;
-            userToPraise.Reputation += _rate.ReputationPerPraise;
-
-            Update(user);
-
-            return Update(userToPraise);
-        }
-
-        public User Punish(string username, User user)
-        {
-            var userToPunish = GetByUsername(username);
-
-            if (null == userToPunish) return null;
-
-            user.StaminaPoints -= _rate.PunishStaminaCost;
-            userToPunish.Reputation += _rate.ReputationPerPunish;
-
-            Update(user);
-
-            return Update(userToPunish);
         }
 
         public IEnumerable<User> GetTopPlayers()

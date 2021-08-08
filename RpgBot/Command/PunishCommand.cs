@@ -13,13 +13,13 @@ namespace RpgBot.Command
         public int ArgsCount => 1;
         public int RequiredLevel => 3;
 
-        private readonly IUserService _userService;
+        private readonly IExperienceService _experienceService;
         private readonly IRate _rate;
         private readonly ICommandArgsResolver _commandArgsResolver;
         
-        public PunishCommand(IUserService userService, IRate rate, ICommandArgsResolver commandArgsResolver)
+        public PunishCommand(IExperienceService experienceService, IRate rate, ICommandArgsResolver commandArgsResolver)
         {
-            _userService = userService;
+            _experienceService = experienceService;
             _rate = rate;
             _commandArgsResolver = commandArgsResolver;
         }
@@ -33,11 +33,9 @@ namespace RpgBot.Command
             if (user.StaminaPoints < _rate.PunishStaminaCost)
                 return $"Not enough stamina, need {_rate.PunishStaminaCost} ({user.StaminaPoints}).";
             
-            var userToPunish = _userService.Punish(username, user);
+            var userToPunish = _experienceService.Punish(username, user);
 
-            return null == userToPunish 
-                ? $"User '{username}' not found" 
-                : $"{userToPunish.Username} got punished. {userToPunish.Reputation} reputation in total.";
+            return $"{userToPunish.Username} got punished. {userToPunish.Reputation} reputation in total.";
         }
     }
 }

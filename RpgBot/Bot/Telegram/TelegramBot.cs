@@ -21,6 +21,7 @@ namespace RpgBot.Bot.Telegram
         private readonly TelegramCommands _telegramCommands;
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
+        private readonly IExperienceService _experienceService;
         private readonly ICommands _commands;
 
         public TelegramBot(
@@ -28,12 +29,14 @@ namespace RpgBot.Bot.Telegram
             ILogger<TelegramBot> logger,
             IConfiguration configuration,
             ICommands commands,
+            IExperienceService experienceService,
             TelegramCommands telegramCommands)
         {
             _logger = logger;
             _telegramCommands = telegramCommands;
             _configuration = configuration;
             _userService = userService;
+            _experienceService = experienceService;
             _commands = commands;
         }
 
@@ -66,7 +69,7 @@ namespace RpgBot.Bot.Telegram
         public User Advance(User user, ChatId chat, MessageType type)
         {
             var userLevel = user.Level;
-            _userService.AddExpForMessage(user, type);
+            _experienceService.AddExpForMessage(user, type);
 
             if (user.Level != userLevel)
                 SendMessageAsync(chat, $"@{user.Username}, you have advanced to level {user.Level}!");

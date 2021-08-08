@@ -13,7 +13,6 @@ namespace RpgBotUnitTests.Service
     public class UserServiceTests
     {
         private BotContext _context;
-        private Mock<IRate> _mockRate;
         private Mock<ILevelSystem> _mockLevelSystem;
 
         private User _user1;
@@ -30,16 +29,18 @@ namespace RpgBotUnitTests.Service
             _context = new BotContext(options);
             _context.Database.EnsureDeleted();
 
-            _user1 = new User() { Id = 1, UserId = "userid1", Username = "username" };
-            _user2 = new User() { Id = 2, UserId = "userid2", Username = "username2" };
-            _user3 = new User() { Id = 3, UserId = "userid3", Username = "username3" };
+            _user1 = new User()
+                { Id = 1, UserId = "userid1", Username = "username", Experience = 30, Reputation = 5, Level = 2 };
+            _user2 = new User()
+                { Id = 2, UserId = "userid2", Username = "username2", Experience = 25, Reputation = 6, Level = 2 };
+            _user3 = new User()
+                { Id = 3, UserId = "userid3", Username = "username3", Experience = 35, Reputation = 3, Level = 3 };
 
             _context.Users.Add(_user1);
             _context.Users.Add(_user2);
             _context.Users.Add(_user3);
             _context.SaveChanges();
 
-            _mockRate = new Mock<IRate>();
             _mockLevelSystem = new Mock<ILevelSystem>();
         }
 
@@ -47,7 +48,7 @@ namespace RpgBotUnitTests.Service
         public void CreateWillAddsNewUserToDatabaseAndReturnsItBack()
         {
             // arrange
-            var userService = new UserService(_context, _mockRate.Object, _mockLevelSystem.Object);
+            var userService = new UserService(_context, _mockLevelSystem.Object);
             const string username = "username";
             const string userId = "userid123";
 
@@ -68,7 +69,7 @@ namespace RpgBotUnitTests.Service
         public void GetByUsernameWillReturnUserIfFoundsOrNull(string username, bool isNull)
         {
             // arrange
-            var userService = new UserService(_context, _mockRate.Object, _mockLevelSystem.Object);
+            var userService = new UserService(_context, _mockLevelSystem.Object);
 
             // act
             var actual = userService.GetByUsername(username);
@@ -89,7 +90,7 @@ namespace RpgBotUnitTests.Service
         public void UpdateWillUpdatesUserFields()
         {
             // arrange
-            var userService = new UserService(_context, _mockRate.Object, _mockLevelSystem.Object);
+            var userService = new UserService(_context, _mockLevelSystem.Object);
             const int newMessagesCount = 2;
 
             _user1.MessagesCount = newMessagesCount;
@@ -109,7 +110,7 @@ namespace RpgBotUnitTests.Service
         public void GetByUserIdWillReturnUserIfFoundsOrNull(string userId, bool isNull)
         {
             // arrange
-            var userService = new UserService(_context, _mockRate.Object, _mockLevelSystem.Object);
+            var userService = new UserService(_context, _mockLevelSystem.Object);
 
             // act
             var actual = userService.GetByUserId(userId);
@@ -139,13 +140,13 @@ namespace RpgBotUnitTests.Service
             bool gets)
         {
             // arrange
-            var userService = new UserService(_context, _mockRate.Object, _mockLevelSystem.Object);
-            
+            var userService = new UserService(_context, _mockLevelSystem.Object);
+
             if (gets)
             {
                 // act
                 var actual = userService.Get(username, userId);
-                
+
                 // assert
                 Assert.IsNotNull(actual);
                 Assert.IsInstanceOf<User>(actual);
@@ -158,7 +159,7 @@ namespace RpgBotUnitTests.Service
             {
                 // act
                 var actual = userService.Get(username, userId);
-                
+
                 // assert
                 Assert.IsNotNull(actual);
                 Assert.IsInstanceOf<User>(actual);
@@ -172,7 +173,7 @@ namespace RpgBotUnitTests.Service
             if (updates)
             {
                 var actual = userService.Get(username, userId);
-                
+
                 Assert.IsNotNull(actual);
                 Assert.IsInstanceOf<User>(actual);
 
@@ -182,13 +183,58 @@ namespace RpgBotUnitTests.Service
                     Assert.AreEqual(userId, actual.Username);
                     return;
                 }
-                
+
                 Assert.AreEqual(username, actual.Username);
 
                 return;
             }
-            
+
             Assert.Fail("Something went wrong");
+        }
+
+        [Test]
+        public void GetTopPlayersReturnsListOfPlayersInOrder()
+        {
+            // arrange
+            var userService = new UserService(_context, _mockLevelSystem.Object);
+
+            // act
+            var users = userService.GetTopPlayers();
+            var actual = users as User[] ?? users.ToArray();
+
+            // assert
+            Assert.That(actual, Is.Not.Empty);
+            Assert.That(actual, Has.Exactly(3).Items);
+            Assert.AreEqual(actual[0].Id, 3);
+            Assert.AreEqual(actual[1].Id, 2);
+            Assert.AreEqual(actual[2].Id, 1);
+        }
+
+        [Test]
+        public void StringifyUserWillReturnsUserAsString()
+        {
+            // arrange
+            _mockLevelSystem
+                .Setup(l => l.GetExpToNextLevel(2))
+                .Returns(158);
+
+            var userService = new UserService(_context, _mockLevelSystem.Object);
+            var expected =
+                "Id: userid1\n" +
+                "Name: username\n" +
+                "Msg: 0\n" +
+                "Rep: 5\n" +
+                "LVL: 2\n" +
+                $"Exp: 30/{_mockLevelSystem.Object.GetExpToNextLevel(2)}\n" +
+                "HP: 100/100\n" +
+                "MP: 100/100\n" +
+                "SP: 100/100";
+
+            // act
+            var actual = userService.Stringify(_user1);
+
+            // assert
+            Assert.AreEqual(expected, actual);
         }
     }
 }

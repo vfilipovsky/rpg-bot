@@ -32,6 +32,7 @@ namespace RpgBot
             serviceCollection.AddSingleton(configuration);
             serviceCollection.AddSingleton<IBot<Message, ChatId>, TelegramBot>();
             serviceCollection.AddSingleton<IUserService, UserService>();
+            serviceCollection.AddSingleton<IExperienceService, ExperienceService>();
             serviceCollection.AddSingleton<IRate, Rate>();
             serviceCollection.AddSingleton<ILevelSystem, LevelSystem>();
             serviceCollection.AddSingleton<ICommandAliasService, CommandAliasService>();
