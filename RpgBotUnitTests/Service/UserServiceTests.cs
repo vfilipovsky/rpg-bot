@@ -185,11 +185,7 @@ namespace RpgBotUnitTests.Service
                 }
 
                 Assert.AreEqual(username, actual.Username);
-
-                return;
             }
-
-            Assert.Fail("Something went wrong");
         }
 
         [Test]

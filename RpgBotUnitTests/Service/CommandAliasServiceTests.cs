@@ -24,14 +24,14 @@ namespace RpgBotUnitTests.Service
 
             _context = new BotContext(options);
             _context.Database.EnsureDeleted();
-            
-            _context.CommandAliases.Add(new CommandAlias() {Alias = "alias1"});
-            _context.CommandAliases.Add(new CommandAlias() {Alias = "alias2"});
-            _context.CommandAliases.Add(new CommandAlias() {Alias = "alias3"});
+
+            _context.CommandAliases.Add(new CommandAlias() { Id = 1, Alias = "alias1" });
+            _context.CommandAliases.Add(new CommandAlias() { Id = 2, Alias = "alias2" });
+            _context.CommandAliases.Add(new CommandAlias() { Id = 3, Alias = "alias3" });
             _context.SaveChanges();
 
             _contextLength = 3;
-            
+
             _service = new CommandAliasService(_context);
         }
 
@@ -49,11 +49,10 @@ namespace RpgBotUnitTests.Service
                 Assert.IsNull(actual);
                 return;
             }
-            
+
             Assert.NotNull(actual);
             Assert.IsInstanceOf<CommandAlias>(actual);
             Assert.AreEqual(alias, actual.Alias);
-            
         }
 
         [Test]
@@ -64,10 +63,7 @@ namespace RpgBotUnitTests.Service
             // assert
             if (itWillThrow)
             {
-                Assert.Throws<NotFoundException>(() =>
-                {
-                    _service.Delete(alias);
-                });
+                Assert.Throws<NotFoundException>(() => _service.Delete(alias));
 
                 return;
             }
@@ -84,7 +80,7 @@ namespace RpgBotUnitTests.Service
             var commandAliases = actual as CommandAlias[] ?? actual.ToArray();
 
             // assert
-            Assert.AreEqual(commandAliases[0].Alias, "alias1");
+            Assert.AreEqual(commandAliases[0].Id, 1);
             Assert.AreEqual(commandAliases.Length, _contextLength);
         }
 
@@ -95,10 +91,7 @@ namespace RpgBotUnitTests.Service
         {
             if (itWillThrow)
             {
-                Assert.Throws<CommandAliasAlreadyExistsException>(() =>
-                {
-                    _service.Create("alias1", "praise");
-                });
+                Assert.Throws<CommandAliasAlreadyExistsException>(() => _service.Create("alias1", "praise"));
 
                 return;
             }
