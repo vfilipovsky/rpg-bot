@@ -47,18 +47,23 @@ namespace RpgBot.Service
                 .FirstOrDefault(u => u.UserId == userId);
         }
 
+        public User Update(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            return user;
+        }
+        
         public User Get(string username, string userId)
         {
             var user = GetByUserId(userId) ?? Create(username, userId);
 
             if (user.Username == username) return user;
 
-            user.Username = username ?? (user.Username = user.Id.ToString());
+            user.Username = username ?? (user.Username = user.UserId);
 
-            _context.Users.Update(user);
-            _context.SaveChanges();
-
-            return user;
+            return Update(user);
         }
 
         private User Regenerate(User user)
@@ -82,10 +87,7 @@ namespace RpgBot.Service
             if (user.MessagesCount % _rate.RegeneratePerMessages == 0) 
                 user = Regenerate(user);
 
-            _context.Users.Update(user);
-            _context.SaveChanges();
-
-            return user;
+            return Update(user);
         }
 
         public User Praise(string username, User user)
@@ -97,11 +99,9 @@ namespace RpgBot.Service
             user.ManaPoints -= _rate.PraiseManaCost;
             userToPraise.Reputation += _rate.ReputationPerPraise;
 
-            _context.Users.Update(user);
-            _context.Users.Update(userToPraise);
-            _context.SaveChanges();
+            Update(user);
 
-            return userToPraise;
+            return Update(userToPraise);
         }
 
         public User Punish(string username, User user)
@@ -113,11 +113,9 @@ namespace RpgBot.Service
             user.StaminaPoints -= _rate.PunishStaminaCost;
             userToPunish.Reputation += _rate.ReputationPerPunish;
 
-            _context.Users.Update(user);
-            _context.Users.Update(userToPunish);
-            _context.SaveChanges();
+            Update(user);
 
-            return userToPunish;
+            return Update(userToPunish);
         }
 
         public IEnumerable<User> GetTopPlayers()
