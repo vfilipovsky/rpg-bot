@@ -111,7 +111,7 @@ namespace RpgBot.Bot.Telegram
 
                 SendMessageAsync(dto.Chat, command.Run(dto.Text, user), dto.MessageId);
             }
-            catch (NotFoundException e) {}
+            catch (NotFoundException) {}
             catch (BotException e)
             {
                 SendMessageAsync(dto.Chat, e.Message, dto.MessageId);
