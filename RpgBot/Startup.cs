@@ -56,7 +56,7 @@ namespace RpgBot
             });
             
             serviceCollection.AddTransient<BotContext>();
-            serviceCollection.AddTransient<IEntryPoint, TelegramBot>();
+            serviceCollection.AddTransient<IEntryPoint, RpgBot.EntryPoint.Telegram>();
 
             serviceCollection.AddLogging(builder =>
             {
