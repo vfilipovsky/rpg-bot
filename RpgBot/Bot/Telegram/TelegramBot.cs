@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RpgBot.Command.Abstraction;
 using RpgBot.DTO;
+using RpgBot.EntryPoint;
 using RpgBot.Exception;
 using RpgBot.Service.Abstraction;
 using RpgBot.Type;
@@ -14,7 +15,7 @@ using User = RpgBot.Entity.User;
 
 namespace RpgBot.Bot.Telegram
 {
-    public class TelegramBot : IBot<Message, ChatId>
+    public class TelegramBot : IBot<Message, ChatId>, IEntryPoint
     {
         private ITelegramBotClient _bot;
         private readonly ILogger<TelegramBot> _logger;
@@ -40,6 +41,11 @@ namespace RpgBot.Bot.Telegram
             _commands = commands;
         }
 
+        public void Run(string[] args)
+        {
+            Listen();
+        }
+        
         public void Listen()
         {
             _bot = new TelegramBotClient(_configuration["Bot:Token"]);
@@ -105,7 +111,7 @@ namespace RpgBot.Bot.Telegram
 
                 SendMessageAsync(dto.Chat, command.Run(dto.Text, user), dto.MessageId);
             }
-            catch (NotFoundException e) {}
+            catch (NotFoundException) {}
             catch (BotException e)
             {
                 SendMessageAsync(dto.Chat, e.Message, dto.MessageId);
