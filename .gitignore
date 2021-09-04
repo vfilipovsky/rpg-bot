@@ -3,6 +3,7 @@
 RpgBot/.env
 RpgBot/bin
 RpgBot/obj
+RpgBot/appsettings.json
 **/*.db
 RpgBot.sln.DotSettings.user
 TelegramRpgBot/.env

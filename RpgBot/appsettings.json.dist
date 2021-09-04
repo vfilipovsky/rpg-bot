@@ -1,4 +1,4 @@
-﻿{
+{
   "ConnectionStrings": {
     "SQLiteConnection": "DataSource=PATH-TO-SQLite"
   },
