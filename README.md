@@ -15,6 +15,8 @@ This Project is made to practice .NET, NUnit with Moq and using it for fun with 
 ### Todo list:
 - [x] Telegram adapter
 - [ ] Discord adapter
+- [ ] Dockerize
+- [ ] Deployment to production server
 - [x] Drop groupId and services logic with it   
 - [ ] Preload users in memory to decrease context calls
 - [ ] Preload command aliases in memory to decrease context calls 
