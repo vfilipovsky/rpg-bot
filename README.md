@@ -3,6 +3,7 @@
 This Project is made to practice .NET, NUnit with Moq and using it for fun with friends in our telegram group.
 
 ### Installation
+- `$ dotnet ef database update`
 - `$ touch RpgBot/Data/Database/bot.db`
 - `$ cp RpgBot/appsettings.json.dist RpgBot/appsettings.json` and fill with necessary data
 
