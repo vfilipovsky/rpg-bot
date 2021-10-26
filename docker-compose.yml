@@ -1,14 +1,16 @@
 version: "3.7"
 
 services:
-  bot:
+  rpg-bot:
+    container_name: rpg-bot
     build:
       context: .
       target: development
     volumes:
       - .:/app
 
-  test:
+  rpg-bot-test:
+    container_name: rpg-bot-test
     build:
       context: .
       target: test

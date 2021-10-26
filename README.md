@@ -6,26 +6,26 @@ This Project is made to practice .NET, NUnit with Moq and using it for fun with 
 
 - `touch RpgBot/Data/Database/bot.db`
 - `cp RpgBot/appsettings.json.dist RpgBot/appsettings.json` and fill with necessary data
-- `docker-compose up -d bot --build`
-- `docker-compose exec bot dotnef ef database update`
+- `docker-compose up -d rpg-bot --build`
+- `docker-compose exec rpg-bot dotnet ef database update`
 
 ### Migrations
 
 #### Generate
 
-`docker-compose exec bot dotnet ef migrations add $migrationName`
+`docker-compose exec rpg-bot dotnet ef migrations add $migrationName`
 
 #### Execute
 
-`docker-compose exec bot dotnef ef database update`
+`docker-compose exec rpg-bot dotnet ef database update`
 
 ### Testing
 
-- `docker-compose up test --build`
+- `docker-compose up rpg-bot-test --build`
 
 ### Run
 
-- `docker-compose up bot --build`
+- `docker-compose up rpg-bot --build`
 
 ### Todo list:
 
