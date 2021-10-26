@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  bot:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+
+  test:
+    build:
+      context: .
+      target: test

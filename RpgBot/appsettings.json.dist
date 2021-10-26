@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "SQLiteConnection": "DataSource=PATH-TO-SQLite"
+    "SQLiteConnection": "DataSource=/app/RpgBot/Data/Database/bot.db"
   },
   "Bot": {
     "Token": "YOUR-TOKEN-HERE",

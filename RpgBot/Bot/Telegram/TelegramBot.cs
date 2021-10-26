@@ -45,7 +45,7 @@ namespace RpgBot.Bot.Telegram
         {
             Listen();
         }
-        
+
         public void Listen()
         {
             _bot = new TelegramBotClient(_configuration["Bot:Token"]);
@@ -54,7 +54,8 @@ namespace RpgBot.Bot.Telegram
             _bot.StartReceiving();
 
             _logger.LogInformation("Bot started listening...");
-            Console.In.ReadLineAsync();
+
+            while (String.Empty != Console.ReadLine()) { }
 
             _bot.StopReceiving();
         }
@@ -111,7 +112,7 @@ namespace RpgBot.Bot.Telegram
 
                 SendMessageAsync(dto.Chat, command.Run(dto.Text, user), dto.MessageId);
             }
-            catch (NotFoundException) {}
+            catch (NotFoundException) { }
             catch (BotException e)
             {
                 SendMessageAsync(dto.Chat, e.Message, dto.MessageId);
